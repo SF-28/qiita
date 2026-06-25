@@ -1,0 +1,14 @@
+{
+  "name": "qiita",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "preview": "qiita preview",
+    "new": "bash scripts/new.sh",
+    "publish": "qiita publish --all",
+    "pull": "qiita pull"
+  },
+  "devDependencies": {
+    "@qiita/qiita-cli": "^1.8.0"
+  }
+}
