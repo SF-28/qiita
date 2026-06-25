@@ -1,0 +1,1 @@
+{"ts":"2026-06-25T03:12:47.391Z","mode":"stop","rule":"clean-state","detail":"Uncommitted changes exist (1 files) but progress.md was not updated. Update progress.md (current state, evidence, next step) before ending the session."}
