@@ -5,7 +5,7 @@ tags:
   - TensorflowLite
   - MobileNetV2
 private: false
-updated_at: '2023-07-14T18:14:52+09:00'
+updated_at: '2026-06-25T11:59:10+09:00'
 id: aee745eff719b374e10c
 organization_url_name: oec
 slide: false

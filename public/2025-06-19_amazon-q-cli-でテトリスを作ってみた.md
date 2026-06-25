@@ -3,7 +3,7 @@ title: Amazon Q CLI でテトリスを作ってみた
 tags:
   - AmazonQCLI
 private: false
-updated_at: '2025-06-19T18:03:15+09:00'
+updated_at: '2026-06-25T11:59:10+09:00'
 id: 53af202ff6ca6a5056da
 organization_url_name: null
 slide: false

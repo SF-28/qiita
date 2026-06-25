@@ -5,7 +5,7 @@ tags:
   - Protocol
   - Livebook
 private: false
-updated_at: '2023-07-14T18:14:31+09:00'
+updated_at: '2026-06-25T11:59:10+09:00'
 id: c2f04db66612b692188a
 organization_url_name: oec
 slide: false

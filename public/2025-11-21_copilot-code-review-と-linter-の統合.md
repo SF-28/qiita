@@ -7,7 +7,7 @@ tags:
   - copilot
   - GitHubCopilot
 private: false
-updated_at: '2025-11-21T17:36:44+09:00'
+updated_at: '2026-06-25T11:59:10+09:00'
 id: 6b72677261957d354520
 organization_url_name: oec
 slide: false
