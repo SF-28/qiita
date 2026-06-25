@@ -16,7 +16,7 @@ ignorePublish: false
 Livebookでモジュールにprotocolを実装する場合、そのままでは以下警告が出て上手く動作しないことがある。
 
 ```text
-warning: the XXXX protocol has already been consolidated, an implementation for Unzip.S3File has no effect. 
+warning: the XXXX protocol has already been consolidated, an implementation for Unzip.S3File has no effect.
 If you want to implement protocols after compilation or during tests, check the "Consolidation" section in the Protocol module documentation
 ```
 

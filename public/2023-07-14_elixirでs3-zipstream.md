@@ -516,7 +516,7 @@ https://hexdocs.pm/unzip/readme.html
 # 余談
 
 - 自動生成されたプロジェクトにconfigフォルダがなくて、少し迷いました。事情を調べると以下経緯のようです。
- 
+
     >mix newでconfig/config.exsをつくらなくなりました。設定ファイルに依存することは、ライブラリやその作者にとって望ましくないとされてきたからです。
 
 https://dev.to/gumi/elixir-elixir-1-9-1dmp

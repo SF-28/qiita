@@ -71,5 +71,5 @@ https://github.blog/changelog/2025-11-20-linter-integration-with-copilot-code-re
 - 今後は SAST 等も統合されていくのだろうか
   - 静的解析は Copilot code review が一通りやってくれるようになる？
 - 実行タイミングを考えると、開発時のフィードバック用途には向かなさそう
-  - ローカルで都度確認可能なように、従来のツール設定が結局必要になってくる 
+  - ローカルで都度確認可能なように、従来のツール設定が結局必要になってくる
   - Coding Agent 前提の開発体制だとまた変わってくる？

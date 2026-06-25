@@ -74,7 +74,7 @@ https://containers.dev/implementors/json_reference/
 
 ```json:devcontainer.json
 {
-    ・・・   
+    ・・・
 	"build": {
 		"dockerfile": "../Dockerfile"
 	},
@@ -86,7 +86,7 @@ https://containers.dev/implementors/json_reference/
 
 ```json:devcontainer.json
 {
-    ・・・   
+    ・・・
 	"customizations": {
 		"vscode": {
 			"extensions": [

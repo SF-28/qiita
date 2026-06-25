@@ -1,0 +1,28 @@
+{
+  "recommendations_version": 4,
+  "generated": "2026-06-25",
+  "review_interval_days": 30,
+  "framework": "pre-commit",
+  "tools": [
+    {
+      "id": "gitleaks",
+      "stage": "pre-commit",
+      "rev": "v8.30.1"
+    },
+    {
+      "id": "commitlint",
+      "stage": "commit-msg",
+      "rev": "v9.25.0"
+    },
+    {
+      "id": "hygiene",
+      "stage": "pre-commit",
+      "rev": "v6.0.0"
+    },
+    {
+      "id": "actionlint",
+      "stage": "pre-commit",
+      "rev": "v1.7.12"
+    }
+  ]
+}

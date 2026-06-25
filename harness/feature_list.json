@@ -1,0 +1,28 @@
+{
+  "features": [
+    {
+      "id": "feat-001",
+      "name": "リポジトリ初期セットアップ",
+      "description": "Qiita CLI + pnpm + GitHub Actions による記事管理基盤を構築する",
+      "scope": ["pnpm + @qiita/qiita-cli 導入", "GitHub Actions ワークフロー", "private: true デフォルト化", "harness 導入"],
+      "out_of_scope": ["記事内容の編集", "CI の拡張"],
+      "acceptance": ["pnpm install が成功する", "pnpm new で private: true の記事が作成される", "./harness/init.sh が正常終了する"],
+      "verify": "./harness/init.sh",
+      "dependencies": [],
+      "status": "in-progress",
+      "evidence": ""
+    },
+    {
+      "id": "feat-002",
+      "name": "記事ファイルのリネーム",
+      "description": "pull で取得したランダム ID ファイル名を、記事内容を表す kebab-case に変更する",
+      "scope": ["public/ 配下の既存 42 記事のリネーム"],
+      "out_of_scope": ["記事内容の変更", "frontmatter の変更"],
+      "acceptance": ["全記事ファイルが内容を表す kebab-case 名になっている", "frontmatter の id が保持されている"],
+      "verify": "ls public/ && head -8 public/*.md | grep '^id:'",
+      "dependencies": ["feat-001"],
+      "status": "not-started",
+      "evidence": ""
+    }
+  ]
+}

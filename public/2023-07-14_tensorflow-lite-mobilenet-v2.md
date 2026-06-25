@@ -383,11 +383,11 @@ https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/examples/py
 - 公式ノートブックを実行したところ、importでエラー
 
     ```text
-    /usr/local/lib/python3.9/dist-packages/tensorflow_addons/utils/ensure_tf_install.py:53: UserWarning: Tensorflow Addons supports using Python ops for all Tensorflow versions above or equal to 2.9.0 and strictly below 2.12.0 (nightly versions are not supported). 
-     The versions of TensorFlow you are currently using is 2.8.4 and is not supported. 
+    /usr/local/lib/python3.9/dist-packages/tensorflow_addons/utils/ensure_tf_install.py:53: UserWarning: Tensorflow Addons supports using Python ops for all Tensorflow versions above or equal to 2.9.0 and strictly below 2.12.0 (nightly versions are not supported).
+     The versions of TensorFlow you are currently using is 2.8.4 and is not supported.
     Some things might work, some things might not.
     If you were to encounter a bug, do not file an issue.
-    If you want to make sure you're using a tested and supported configuration, either change the TensorFlow version or the TensorFlow Addons's version. 
+    If you want to make sure you're using a tested and supported configuration, either change the TensorFlow version or the TensorFlow Addons's version.
     You can find the compatibility matrix in TensorFlow Addon's readme:
     https://github.com/tensorflow/addons
       warnings.warn(
@@ -400,10 +400,10 @@ https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/examples/py
     `!pip uninstall -y tensorflow && pip install -q tensorflow==2.8.0`
 
 - ローカル実行時、importでエラー
-    
+
     ```text
     AttributeError: module 'numpy' has no attribute 'object'.
-    `np.object` was a deprecated alias for the builtin `object`. To avoid this error in existing code, use `object` by itself. Doing this will not modify any behavior and is safe. 
+    `np.object` was a deprecated alias for the builtin `object`. To avoid this error in existing code, use `object` by itself. Doing this will not modify any behavior and is safe.
     The aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original release note at:
         https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
     ```
@@ -415,7 +415,7 @@ https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/examples/py
     `pipenv install numpy~=1.23.5`
 
 - 再度importを試みるもエラー
-    
+
     ```text
     TqdmWarning: IProgress not found. Please update jupyter and ipywidgets
     ```
