@@ -100,7 +100,7 @@ https://example.com/docs
 （次の段落）
 ```
 
-Qiita は単独行の裸 URL をカード表示するが、`<>` で囲むとカードにならない。VSCode の markdownlint（MD034）が保存時に `<>` を付ける場合は、`.vscode/settings.json` の `markdownlint.config` で MD034 を無効化する（`.vscode` は gitignore 対象のためローカル設定）。
+Qiita は単独行の裸 URL をカード表示するが、`<>` で囲むとカードにならない。VSCode の markdownlint（MD034）が保存時に `<>` を付けるため、`.vscode/settings.json` の `markdownlint.config` で MD034 を無効化している（`.vscode` 全体は gitignore だが、この設定だけは明示的にコミットして共有）。
 
 ## Step 5: セルフレビュー
 
