@@ -11,14 +11,15 @@ scripts/new.sh   記事作成ラッパー (private: true デフォルト)
 
 ## 記事管理
 
-- 新規作成: `pnpm new <basename>` → `public/<basename>.md` が `private: true` で生成される
+- 新規作成: `pnpm new <basename>` → `public/YYYY-MM-DD_<basename>.md` が `private: true` で生成される（日付は自動付与）
 - プレビュー: `pnpm preview`
 - 同期: `pnpm pull` (Qiita → ローカル)
 - 公開: main への push で GitHub Actions が自動実行
 
 ## 記事ファイルの規約
 
-- ファイル名は記事内容を表す kebab-case (例: `elixir-s3-upload.md`)
+- ファイル名は `YYYY-MM-DD_<記事タイトルの要約>.md` の形式（例: `2025-05-12_yarn-v1-から-pnpm-への移行.md`）
+- basename 部分は日本語を含む kebab-case。英語の技術用語はそのまま小文字で使い、主要な句の区切りにハイフンを入れる
 - Qiita との紐付けは frontmatter の `id` フィールドで行われる。ファイル名は自由
 - 新規記事は `private: true` (限定共有) で作成し、公開時に手動で `false` に変更する
 - `ignorePublish: true` にすると CI での公開対象から除外される

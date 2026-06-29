@@ -6,6 +6,9 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-npx qiita new "$1"
-sed -i '' 's/^private: false$/private: true/' "public/$1.md"
+DATE=$(date +%Y-%m-%d)
+FILENAME="${DATE}_$1"
+
+npx qiita new "$FILENAME"
+sed -i '' 's/^private: false$/private: true/' "public/${FILENAME}.md"
 echo "  → private: true に設定しました"
