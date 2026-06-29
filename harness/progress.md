@@ -2,34 +2,29 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-25 12:10
-**Active Feature:** feat-001 - リポジトリ初期セットアップ
+**Last Updated:** 2026-06-25
+**Active Feature:** 記事作成（qiita-create スキル実行）
 
 ## Status
 
 ### What's Done
 
-- [x] pnpm init + @qiita/qiita-cli v1.8.0 インストール
-- [x] qiita init (publish.yml, .gitignore, qiita.config.json 生成)
-- [x] package.json スクリプト整備 (preview / new / publish / pull)
-- [x] private: true デフォルト化 (scripts/new.sh)
-- [x] GitHub リポジトリ作成 (SF-28/qiita, public)
-- [x] qiita pull で既存 42 記事を同期
-- [x] harness 導入 (CLAUDE.md, feature_list, hooks, commit gate)
-- [x] README.md 作成
-- [x] 記事ファイル 42 件リネーム (updated_at + タイトル kebab-case)
-- [x] 初回 push 完了、GitHub Actions Publish articles 成功
-- [x] qiita-article スキル作成 (3 フェーズ: 作成 → 承認準備 → 公開設定)
+- [x] リポジトリ初期セットアップ (feat-001)
+- [x] qiita-create スキルで新規記事作成: `public/ai-understanding-scaffolding.md`
+  - タイトル: 「AI との付き合い方を考えないと、見かけの理解だけが育つ」
+  - 元記事（Zenn）への所感記事。RAG Vibe Coding の失敗、AWS 試験勉強、勉強会資料の三つの体験を比較
+  - stop-ai-slop-jp / japanese-tech-writing 併用で執筆、セルフレビュー完了
+  - ステータス: private: true（限定共有）
 
 ### What's In Progress
 
-- [ ] qiita-article スキルのコミット
+- [ ] ユーザーによる内容確認・push
 
 ### What's Next
 
-1. スキルの動作確認（テスト記事で各フェーズを試す）
-2. feat-001 完了判定
-3. feat-002: 記事ファイルリネーム（完了済み、evidence 記録のみ）
+1. 記事内容の最終確認
+2. push → CI で Qiita に反映（限定共有）
+3. 必要に応じて `/qiita-approve` で承認申請
 
 ## Notes for Next Session
 
