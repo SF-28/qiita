@@ -2,16 +2,18 @@
 title: '[Terraform] RDS Proxyをリーダーエンドポイント(Aurora Replicas)に対応させる'
 tags:
   - AWS
-  - Terraform
   - Aurora
-  - readonly
   - RDSProxy
+  - Terraform
+  - readonly
 private: false
-updated_at: '2023-07-31T13:41:20+09:00'
+updated_at: '2026-07-21T17:52:21+09:00'
 id: 55a07eb2dd5a369473ff
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: 4f3daca63fb78f16df0b
+agreed_posting_campaign_term: true
 ---
 # はじめに
 

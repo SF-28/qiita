@@ -4,13 +4,15 @@ tags:
   - Git
   - ClaudeCode
   - worktree
-  - symlink
+  - Symlink
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-07-21T17:52:21+09:00'
+id: c98c7f3e843d7a3186da
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 Claude Code で機能ごとにブランチを切るとき、私は git worktree を使っています。

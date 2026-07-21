@@ -2,16 +2,18 @@
 title: pre-commit + commitizen + commitlint で快適なコミットを実現する
 tags:
   - commit
+  - commitizen
+  - commitlint
   - githooks
   - pre-commit
-  - commitlint
-  - commitizen
 private: false
-updated_at: '2025-05-19T10:42:12+09:00'
+updated_at: '2026-07-21T17:52:21+09:00'
 id: ff7dd2df0e474986fee9
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: 4f3daca63fb78f16df0b
+agreed_posting_campaign_term: true
 ---
 # コミットのイメージ
 
