@@ -29,16 +29,23 @@
     正しい記述に置換。store パスを OS 依存として一般化
   - 改善 A/B/C 反映: 理由節を統合、「スキルの限界」を独立 H2 化、「リンクしたあとの検証」節を追加
 
+### What's Done（追記 2026-07-21）
+
+- [x] s-56 記事を push 済み（`6961c9f` docs / `0352c03` chore、CI で限定共有反映）
+  - navi: s-56 → t-235（done）promote、log l-819 記録
+
 ### What's In Progress
 
-- [ ] ユーザーによる内容確認・push（未コミット・未 push）
+- [ ] **要ユーザー判断**: `public/2026-06-29_slide-md…ai に作らせる.md` がワークツリーで削除されている
+  - 私の操作ではなく原因不明。HEAD には残存、コミット/push には含めていない（未ステージのまま）
+  - 選択肢: 復元（`git checkout -- <file>`・安全側・推奨） / 削除を確定コミット / 保留
 
 ### What's Next
 
-1. 記事内容の最終確認（`pnpm preview` で目視可）
-2. push → CI で Qiita に反映（限定共有）
-3. 必要に応じて `/qiita-approve` で承認申請
-4. 残りの記事ネタ seed（s-57〜s-60）から次の記事を執筆
+1. SLIDE.md 削除の扱いを決める（上記）
+2. 必要に応じて `/qiita-approve` → `/qiita-publish` で一般公開
+3. 残りの記事ネタ seed（s-57〜s-60）から次の記事を執筆
+4. dotfiles 側スクリプトの誤り2件（deferred 記録済み）を別セッションで修正
 
 ## Notes for Next Session
 
