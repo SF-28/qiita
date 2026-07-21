@@ -29,23 +29,24 @@
     正しい記述に置換。store パスを OS 依存として一般化
   - 改善 A/B/C 反映: 理由節を統合、「スキルの限界」を独立 H2 化、「リンクしたあとの検証」節を追加
 
-### What's Done（追記 2026-07-21）
+### What's Done（追記 2026-07-22）
 
-- [x] s-56 記事を push 済み（`6961c9f` docs / `0352c03` chore、CI で限定共有反映）
-  - navi: s-56 → t-235（done）promote、log l-819 記録
+- [x] s-56 記事を push 済み（CI で限定共有反映、`id: c98c7f3e843d7a3186da` 取得）
+  - navi: s-56 → t-235（done）promote、log l-819 / l-820
+- [x] `/qiita-approve` 実行: id を同期し承認申請情報を出力（社内ワークフロー入力待ち）
+- [x] 原因不明の SLIDE.md ワークツリー削除を安全側で復元（HEAD 一致・working tree clean）
 
 ### What's In Progress
 
-- [ ] **要ユーザー判断**: `public/2026-06-29_slide-md…ai に作らせる.md` がワークツリーで削除されている
-  - 私の操作ではなく原因不明。HEAD には残存、コミット/push には含めていない（未ステージのまま）
-  - 選択肢: 復元（`git checkout -- <file>`・安全側・推奨） / 削除を確定コミット / 保留
+- （なし）
 
 ### What's Next
 
-1. SLIDE.md 削除の扱いを決める（上記）
-2. 必要に応じて `/qiita-approve` → `/qiita-publish` で一般公開
+1. 社内ワークフローで承認申請（出力済みの標題・概要・URL を入力）
+2. 承認後 `/qiita-publish` で Organization 紐づけ・一般公開
 3. 残りの記事ネタ seed（s-57〜s-60）から次の記事を執筆
 4. dotfiles 側スクリプトの誤り2件（deferred 記録済み）を別セッションで修正
+5. 未 push のローカル progress コミットは次回 push でまとめる
 
 ## Notes for Next Session
 
