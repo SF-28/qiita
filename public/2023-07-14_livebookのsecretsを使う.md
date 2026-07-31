@@ -10,6 +10,8 @@ id: af239b6f336a246d6b77
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 # Livebookとは
 

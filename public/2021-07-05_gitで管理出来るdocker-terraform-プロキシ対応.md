@@ -11,6 +11,8 @@ id: bc716cc68accd7ae91b6
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 ## 背景
 - インフラもコードで管理してGit管理に乗せたい(IaC)

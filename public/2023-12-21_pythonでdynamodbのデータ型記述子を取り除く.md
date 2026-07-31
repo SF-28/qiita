@@ -11,6 +11,8 @@ id: d22fc20dae35c2aec27d
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 # 本記事について
 

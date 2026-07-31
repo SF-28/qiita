@@ -10,6 +10,8 @@ id: 7294950a25d8a4223d64
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 本記事では、Pythonの標準的なテストライブラリである `pytest` のプラグイン、**`pytest-xdist`** を紹介します。
 テストケースが増えるにつれて長くなりがちな実行時間を、**並列実行** によって大幅に短縮する方法を解説します。導入は非常に簡単ですが、いくつか注意すべきポイントも存在するため、その対策も合わせて記載します。

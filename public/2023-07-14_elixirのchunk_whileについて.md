@@ -9,6 +9,8 @@ id: 27432d9cf64f253fab84
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 ## この記事について
 

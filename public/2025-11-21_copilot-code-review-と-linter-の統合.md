@@ -12,6 +12,8 @@ id: 6b72677261957d354520
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 # 要約
 

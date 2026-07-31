@@ -8,6 +8,8 @@ id: cffc22c97646af360894
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 GitHub Copilot をより効果的に活用するためのヒントを整理
 

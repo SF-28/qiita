@@ -12,6 +12,8 @@ id: e05bdc53d92f01b7d6c8
 organization_url_name: oec
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 # Elixir 挑戦記
 
