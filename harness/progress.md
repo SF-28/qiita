@@ -2,8 +2,8 @@
 
 ## Current State
 
-**Last Updated:** 2026-07-21
-**Active Feature:** 記事作成（qiita-create スキル実行）
+**Last Updated:** 2026-07-31
+**Active Feature:** ツールチェーン整備（mise 導入 + qiita-cli バージョンアップ）
 
 ## Status
 
@@ -36,12 +36,52 @@
 - [x] `/qiita-approve` 実行: id を同期し承認申請情報を出力（社内ワークフロー入力待ち）
 - [x] 原因不明の SLIDE.md ワークツリー削除を安全側で復元（HEAD 一致・working tree clean）
 
+### What's Done（追記 2026-07-31）
+
+- [x] node / pnpm を mise 管理に移行: `mise.toml` を新規作成
+      （`node = "24.16.0"` / `"npm:pnpm" = "11.5.3"`）
+  - 従来は global `~/.config/mise/config.toml` の node 23.11.1 に暗黙依存していた。
+    23 系は EOL の奇数リリースのため、ユーザー判断で LTS の 24.16.0 にピン
+  - README のセットアップに `mise install` を追記
+- [x] `@qiita/qiita-cli` を `^1.8.0` → `^1.10.0` に更新（lockfile 更新済み）
+  - `pnpm outdated` は 1.9.1 と表示したがキャッシュが古く、レジストリ実値は 1.10.0
+  - pnpm v11 既定の minimumReleaseAge に引っかかり、pnpm が `pnpm-workspace.yaml` を自動生成して
+    `minimumReleaseAgeExclude: ['@qiita/qiita-cli@1.10.0']` を記録。再現性のためコミット対象に含める
+  - CI は `increments/qiita-cli/actions/publish@v1` を使うため、この更新は公開パイプラインに影響しない
+- [x] 検証: `mise x -- node -v` → v24.16.0 / `pnpm -v` → 11.5.3 /
+      `pnpm exec qiita version` → 1.10.0 / `./harness/init.sh` → Verification Complete
+- [x] コマンドを mise task に統一（`package.json` の scripts は全削除）
+  - `mise.toml` の `[tasks]` に install / login / new / preview / pull / publish を定義
+  - 副次効果: 旧 `"publish"` script は `pnpm publish`（レジストリ公開の組み込みコマンド）に
+    シャドウされて呼べなかったが、task 化で名前衝突が解消
+  - 追随更新: README / CLAUDE.md / `scripts/new.sh` の usage / `harness/init.sh`（`mise run install`）/
+    `harness/feature_list.json` の acceptance / `.claude/skills/qiita-create` / `.claude/skills/qiita-approve`
+  - `scripts/new.sh` の `npx qiita` を `pnpm exec qiita` に統一
+  - 検証: `mise tasks` で 6 タスク表示、`mise run --dry-run new sample` →
+    `bash scripts/new.sh sample`、`mise run --dry-run pull -- --force` →
+    `pnpm exec qiita pull --force`、`./harness/init.sh` → Verification Complete
+
+- [x] 粒度別に 3 コミット（いずれも未 push）
+  - `4c37756` chore: node/pnpm を mise 管理に移行し qiita-cli を 1.10.0 に更新
+  - `023b8ef` chore: 記事管理コマンドを mise task に統一
+  - `1b80bdd` chore: qiita pull で記事の frontmatter を同期（40 記事・+80 行）
+- [x] `mise run pull` 実行後、`public/` の差分は 40 記事への
+  `posting_campaign_uuid` / `agreed_posting_campaign_term` 追加のみ（本文変更なし）と確認して同期をコミット
+- [x] `.pre-commit-config.yaml` の `check-yaml` に `--allow-multiple-documents` を追加
+  - pnpm-lock.yaml は「供給網検証セクション + lockfile 本体」の複数ドキュメント構成。
+    pre-commit は変更ファイルのみ検査するため、lockfile を触るまで顕在化していなかった
+- [x] navi: t-284 を作成して in_progress、log l-1089 / l-1090 を紐付け
+
 ### What's In Progress
 
-- （なし）
+- 未 push（3 コミット）。push は即公開に繋がるためユーザー承認待ち
+- 未追跡の新規記事 `public/2026-07-31_Graph-Engineering から考える Agent システム設計で大切なこと.md`
+  はユーザー判断で**コミットしない**（本日追加分）
 
 ### What's Next
 
+0. 未 push の 3 コミット（`4c37756` / `023b8ef` / `1b80bdd`）を承認後に push する
+   （push で CI が走り Qiita に反映される）。新規記事はコミットしていないので公開されない
 1. 社内ワークフローで承認申請（出力済みの標題・概要・URL を入力）
 2. 承認後 `/qiita-publish` で Organization 紐づけ・一般公開
 3. 残りの記事ネタ seed（s-57〜s-60）から次の記事を執筆
