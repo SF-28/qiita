@@ -5,10 +5,10 @@ tags:
   - ClaudeCode
   - worktree
   - Symlink
-private: true
-updated_at: '2026-07-21T17:52:21+09:00'
+private: false
+updated_at: '2026-07-23T12:59:52+09:00'
 id: c98c7f3e843d7a3186da
-organization_url_name: null
+organization_url_name: oec
 slide: false
 ignorePublish: false
 posting_campaign_uuid: null
