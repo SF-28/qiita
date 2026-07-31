@@ -112,7 +112,7 @@ Agentが状況を観察し、考え、ツールを使い、その結果を再び
 
 LangGraphは2024年1月に、Agent Runtimeで必要となる循環的な処理を、共有State、Node、Edgeを持つGraphとして構築するために公開された。
 
-単純なAgent Loopへすべての判断を任せるのではなく、特定のツールを先に呼ばせる、状態に応じてPromptを変える、人間の確認を挟むといった制御を加えやすくすることが、当初からの目的として説明されている。([langchain.com][6])
+単純なAgent Loopへすべての判断を任せるのではなく、特定のツールを先に呼ばせる、出力形式を固定する、人間の確認を挟むといった制御を加えやすくすることが、当初からの目的として説明されている。([langchain.com][6])
 
 ここで重要なのは、Graphが必ずしもDAGではないことだ。
 
@@ -312,7 +312,7 @@ Graphは実行構造であり、個々のAgentの能力を自動的に高める�
 
 不適切なAgent、曖昧な責務、弱い検証を接続すれば、失敗が複雑化するだけかもしれない。
 
-LangChain自身も、汎用的なDeep Researchのように、事前に処理経路を決めにくいタスクでは、定義済みGraphから、計画・委譲・Context管理をAgentへ任せる構成へ移行した事例を紹介している。([langchain.com][1])
+LangChainも、汎用的なDeep Researchのように事前に処理経路を決めにくいタスクの例として、GPT Researcherが定義済みGraphから、計画・委譲・Context管理をAgentへ任せる構成へ移行した事例を紹介している。([langchain.com][1])
 
 Graphは、自由度を下げる代わりに制御を得る場合もあれば、動的なRoutingによって自由度を残す場合もある。
 
@@ -324,7 +324,7 @@ Graphは、自由度を下げる代わりに制御を得る場合もあれば、
 
 一方で、Multi-Agent Systemの性能向上が小さいケースや、Agent間の情報欠落、役割逸脱、重複実行、検証不足などの失敗も報告されている。([アーカイブ][9])
 
-AnthropicのMulti-Agent Researchシステムでは、並列調査や単一Context Windowを超える情報量を扱える利点が得られた一方、同社の計測条件では通常のチャットより大幅に多くのトークンを使用した。
+AnthropicのMulti-Agent Researchシステムでは、並列調査や単一Context Windowを超える情報量を扱える利点が得られた一方、同社の計測条件では通常のチャットの約15倍のトークンを使用したと報告されている。
 
 また、すべてのAgentが同じContextを必要とするタスクや、Agent間の依存関係が多いタスクには向きにくいと報告している。([Anthropic][10])
 
@@ -608,7 +608,7 @@ Graph Engineeringから得た最も重要な示唆は、この問いそのもの
 * [Awesome Graph Engineering](https://github.com/ChaoYue0307/awesome-graph-engineering)
 * [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 * [AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://arxiv.org/abs/2308.08155)
-* [Dynamic LLM-Agent Network](https://arxiv.org/abs/2310.02170)
+* [A Dynamic LLM-Powered Agent Network for Task-Oriented Agent Collaboration（DyLAN）](https://arxiv.org/abs/2310.02170)
 * [LangGraph 公開時の記事](https://www.langchain.com/blog/langgraph)
 * [GPTSwarm: Language Agents as Optimizable Graphs](https://arxiv.org/abs/2402.16823)
 * [From Static Templates to Dynamic Runtime Graphs: A Survey of Workflow Optimization for LLM Agents](https://arxiv.org/abs/2603.22386)
@@ -616,12 +616,12 @@ Graph Engineeringから得た最も重要な示唆は、この問いそのもの
 * [Why Do Multi-Agent LLM Systems Fail?](https://arxiv.org/abs/2503.13657)
 
 [1]: https://www.langchain.com/blog/3-years-of-graph-engineering-with-langgraph "3 Years of Graph Engineering with LangGraph"
-[2]: https://github.com/ChaoYue0307/awesome-graph-engineering/blob/main/DEFINITION.md?utm_source=chatgpt.com "awesome-graph-engineering/DEFINITION.md at main · ChaoYue0307/awesome-graph-engineering · GitHub"
-[3]: https://arxiv.org/pdf/2210.03629v2?utm_source=chatgpt.com "arXiv:2210.03629v2 [cs.CL] 27 Nov 2022"
-[4]: https://arxiv.org/abs/2308.08155?utm_source=chatgpt.com "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation"
-[5]: https://arxiv.org/pdf/2310.02170v1?utm_source=chatgpt.com "arXiv:2310.02170v1 [cs.CL] 3 Oct 2023"
+[2]: https://github.com/ChaoYue0307/awesome-graph-engineering/blob/main/DEFINITION.md "awesome-graph-engineering/DEFINITION.md at main · ChaoYue0307/awesome-graph-engineering · GitHub"
+[3]: https://arxiv.org/pdf/2210.03629v2 "arXiv:2210.03629v2 [cs.CL] 27 Nov 2022"
+[4]: https://arxiv.org/abs/2308.08155 "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation"
+[5]: https://arxiv.org/pdf/2310.02170v1 "arXiv:2310.02170v1 [cs.CL] 3 Oct 2023"
 [6]: https://www.langchain.com/blog/langgraph "LangGraph"
 [7]: https://arxiv.org/pdf/2402.16823 "GPTSwarm: Language Agents as Optimizable Graphs"
 [8]: https://arxiv.org/html/2603.22386v1 "From Static Templates to Dynamic Runtime Graphs: A Survey of Workflow Optimization for LLM Agents"
-[9]: https://arxiv.org/abs/2503.13657?utm_source=chatgpt.com "[2503.13657] Why Do Multi-Agent LLM Systems Fail?"
-[10]: https://www.anthropic.com/engineering/multi-agent-research-system?utm_source=chatgpt.com "How we built our multi-agent research system \ Anthropic"
+[9]: https://arxiv.org/abs/2503.13657 "[2503.13657] Why Do Multi-Agent LLM Systems Fail?"
+[10]: https://www.anthropic.com/engineering/multi-agent-research-system "How we built our multi-agent research system \ Anthropic"
