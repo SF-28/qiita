@@ -71,22 +71,27 @@
   - pnpm-lock.yaml は「供給網検証セクション + lockfile 本体」の複数ドキュメント構成。
     pre-commit は変更ファイルのみ検査するため、lockfile を触るまで顕在化していなかった
 - [x] navi: t-284 を作成して in_progress、log l-1089 / l-1090 を紐付け
+- [x] `e0e29c7` docs: 記事「Graph Engineeringから考える、Agentシステム設計で大切なこと」を追加
+  - 空だった tags に AI / LLM / AIエージェント / LangGraph / 設計 を設定（Qiita 上限の 5 個）
+  - `private: true` のまま。`organization_url_name` は承認後 `/qiita-publish` で設定する
+  - `updated_at` / `id` は空のまま（push 後に CI が `Updated by qiita-cli` で書き戻す）
+  - 検証: frontmatter を YAML パースして 10 キーと tags 5 件を確認
+  - commitlint の `subject-case` が件名冒頭の英大文字を弾くため、件名を日本語始まりにした
 
 ### What's In Progress
 
-- 未 push（3 コミット）。push は即公開に繋がるためユーザー承認待ち
-- 未追跡の新規記事 `public/2026-07-31_Graph-Engineering から考える Agent システム設計で大切なこと.md`
-  はユーザー判断で**コミットしない**（本日追加分）
+- 未 push（5 コミット）。push は即公開に繋がるためユーザー承認待ち
 
 ### What's Next
 
-0. 未 push の 3 コミット（`4c37756` / `023b8ef` / `1b80bdd`）を承認後に push する
-   （push で CI が走り Qiita に反映される）。新規記事はコミットしていないので公開されない
-1. 社内ワークフローで承認申請（出力済みの標題・概要・URL を入力）
-2. 承認後 `/qiita-publish` で Organization 紐づけ・一般公開
-3. 残りの記事ネタ seed（s-57〜s-60）から次の記事を執筆
-4. dotfiles 側スクリプトの誤り2件（deferred 記録済み）を別セッションで修正
-5. 未 push のローカル progress コミットは次回 push でまとめる
+0. 未 push の 5 コミット（`4c37756` / `023b8ef` / `1b80bdd` / `eb2bfd7` / `e0e29c7`）を
+   承認後に push する。CI が走り、新規記事は**限定共有**で Qiita に作成される
+   （`id` の書き戻しコミットが origin/main に載る）
+1. push 後に `/qiita-approve` で承認申請情報を出力し、社内ワークフローへ入力
+2. 承認後に `/qiita-publish` で Organization 紐づけ・一般公開
+3. s-56 記事（`c98c7f3e843d7a3186da`）の承認申請は出力済み。社内ワークフローへの入力が未完了
+4. 残りの記事ネタ seed（s-57〜s-60）から次の記事を執筆
+5. dotfiles 側スクリプトの誤り2件（deferred 記録済み）を別セッションで修正
 
 ## Notes for Next Session
 
