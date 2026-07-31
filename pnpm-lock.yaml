@@ -208,14 +208,14 @@ importers:
   .:
     devDependencies:
       '@qiita/qiita-cli':
-        specifier: ^1.8.0
-        version: 1.8.0
+        specifier: ^1.10.0
+        version: 1.10.0
 
 packages:
 
-  '@qiita/qiita-cli@1.8.0':
-    resolution: {integrity: sha512-DKrtkJxvkcUS3PlT6LzyGUnkHRkOlKgGemybqxdPvkawgjUE8uzy2WnMpWHQvqOgCJHLHMsf1+f1XdV8M1Wd7Q==}
-    engines: {node: '>=20.0.0'}
+  '@qiita/qiita-cli@1.10.0':
+    resolution: {integrity: sha512-TXRP5uOdadN938MHCJze80BUr0PDSftUHYjYn1FS24VlyQpwocBf66E9qDzeYJwKhaQ6WpSOm9F7SJP7qiUuFA==}
+    engines: {node: '>=22.22.1'}
     hasBin: true
 
   accepts@2.0.0:
@@ -641,8 +641,8 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  ws@8.21.0:
-    resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
+  ws@8.21.1:
+    resolution: {integrity: sha512-+0NTnW77fFN/DjQi6k/Sq/Yvk4Sgajw7urW8V+asjXnRgDs9gyGkdb7EzgfhA4goXsRIZKE28fzIXBHEzhuiWw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -659,7 +659,7 @@ packages:
 
 snapshots:
 
-  '@qiita/qiita-cli@1.8.0':
+  '@qiita/qiita-cli@1.10.0':
     dependencies:
       arg: 5.0.2
       boxen: 8.0.1
@@ -670,7 +670,7 @@ snapshots:
       express: 5.2.1
       gray-matter: 4.0.3
       open: 10.2.0
-      ws: 8.21.0
+      ws: 8.21.1
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -1114,7 +1114,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.21.0: {}
+  ws@8.21.1: {}
 
   wsl-utils@0.1.0:
     dependencies:

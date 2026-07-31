@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@qiita/qiita-cli@1.10.0'

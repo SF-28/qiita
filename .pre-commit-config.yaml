@@ -38,6 +38,8 @@ repos:
         exclude: '^\.claude/hooks/'
       - id: check-yaml
         stages: [pre-commit]
+        # pnpm-lock.yaml は供給網検証セクションと lockfile 本体の複数ドキュメント構成
+        args: [--allow-multiple-documents]
       - id: check-json
         stages: [pre-commit]
       - id: check-toml
