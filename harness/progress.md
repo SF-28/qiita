@@ -77,6 +77,18 @@
   - `updated_at` / `id` は空のまま（push 後に CI が `Updated by qiita-cli` で書き戻す）
   - 検証: frontmatter を YAML パースして 10 キーと tags 5 件を確認
   - commitlint の `subject-case` が件名冒頭の英大文字を弾くため、件名を日本語始まりにした
+- [x] `483784c` ファイル名を規約準拠にリネーム
+  （`2026-07-31_graph-engineeringから考える-agentシステム設計で大切なこと.md`）
+- [x] `0e466ea` ファクトチェックを実施し結果を反映
+  - 出典 10 件を一次ソースで検証。**事実誤認なし**（年月・論文タイトル・引用内容すべて一致）
+  - 検証済み: LangChain の Graph Engineering 記事(2026-07-22) / Awesome Graph Engineering の
+    3 条件 / ReAct(2022-10) / AutoGen(2023-08) / DyLAN(2023-10, T-FFN と early stopping) /
+    LangGraph 公開(2024-01-17) / GPTSwarm(ICML 2024, edge 最適化は REINFORCE) /
+    Workflow Optimization サーベイ(arXiv 2603.22386, 2026-03-23) /
+    MAST(arXiv 2503.13657, 3 分類が原文と一致) / Anthropic Multi-Agent(2025-06-13, 約 15 倍)
+  - 修正 5 点: utm_source=chatgpt.com を 6 件除去 / Deep Research 事例の主語を GPT Researcher に
+    明示 / トークン消費を「約 15 倍」へ具体化 / 参考リンク [5] を正式タイトルへ /
+    LangGraph 記事に無い「状態に応じて Prompt を変える」を「出力形式を固定する」へ差し替え
 
 ### What's In Progress
 
@@ -84,9 +96,9 @@
 
 ### What's Next
 
-0. 未 push の 5 コミット（`4c37756` / `023b8ef` / `1b80bdd` / `eb2bfd7` / `e0e29c7`）を
-   承認後に push する。CI が走り、新規記事は**限定共有**で Qiita に作成される
-   （`id` の書き戻しコミットが origin/main に載る）
+0. 未 push の 8 コミット（`4c37756` / `023b8ef` / `1b80bdd` / `eb2bfd7` / `e0e29c7` /
+   `a844706` / `483784c` / `0e466ea`）を承認後に push する。CI が走り、新規記事は**限定共有**で
+   Qiita に作成される（`id` の書き戻しコミットが origin/main に載る）
 1. push 後に `/qiita-approve` で承認申請情報を出力し、社内ワークフローへ入力
 2. 承認後に `/qiita-publish` で Organization 紐づけ・一般公開
 3. s-56 記事（`c98c7f3e843d7a3186da`）の承認申請は出力済み。社内ワークフローへの入力が未完了
