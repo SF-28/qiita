@@ -7,13 +7,15 @@ Qiita 記事管理リポジトリ。Qiita CLI で記事を Markdown 管理し、
 ```
 public/          記事ファイル (.md)
 scripts/new.sh   記事作成ラッパー (private: true デフォルト)
+mise.toml        node / pnpm のバージョンと mise task 定義
 ```
 
 ## 記事管理
 
-- 新規作成: `pnpm new <basename>` → `public/YYYY-MM-DD_<basename>.md` が `private: true` で生成される（日付は自動付与）
-- プレビュー: `pnpm preview`
-- 同期: `pnpm pull` (Qiita → ローカル)
+- コマンドは mise task に集約（`mise tasks` で一覧、`package.json` に scripts は置かない）
+- 新規作成: `mise run new <basename>` → `public/YYYY-MM-DD_<basename>.md` が `private: true` で生成される（日付は自動付与）
+- プレビュー: `mise run preview`
+- 同期: `mise run pull` (Qiita → ローカル)
 - 公開: main への push で GitHub Actions が自動実行
 
 ## 記事ファイルの規約

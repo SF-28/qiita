@@ -6,8 +6,8 @@ cd "$(dirname "$0")/.."
 
 echo "=== Harness Initialization ==="
 
-echo "=== pnpm install ==="
-pnpm install
+echo "=== mise run install ==="
+mise run install
 
 echo "=== Verification Complete ==="
 echo ""

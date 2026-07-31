@@ -6,18 +6,24 @@ main ブランチへの push で GitHub Actions が自動的に Qiita へ記事�
 
 ## セットアップ
 
+node / pnpm のバージョンとタスクは `mise.toml` で管理している。
+
 ```bash
-pnpm install
-pnpm exec qiita login
+mise install       # node / pnpm を導入
+mise run install   # 依存をインストール
+mise run login     # Qiita CLI にログイン
 ```
 
 ## 使い方
 
 | コマンド | 説明 |
 |---|---|
-| `pnpm new <basename>` | 新規記事を作成（限定共有で作成される） |
-| `pnpm preview` | ローカルプレビューを起動 |
-| `pnpm pull` | Qiita から記事を同期 |
+| `mise run new <basename>` | 新規記事を作成（限定共有で作成される） |
+| `mise run preview` | ローカルプレビューを起動 |
+| `mise run pull` | Qiita から記事を同期（上書きは `mise run pull -- --force`） |
+| `mise run publish` | 記事を Qiita へ公開 |
+
+タスク一覧は `mise tasks` で確認できる。
 
 ## 記事ファイルの規約
 

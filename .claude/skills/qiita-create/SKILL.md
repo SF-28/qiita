@@ -36,7 +36,7 @@ description: Qiita 記事を新規作成するスキル。テーマの掘り下�
 ## Step 3: ファイル作成
 
 ```bash
-pnpm new <basename>
+mise run new <basename>
 ```
 
 - `<basename>` は記事タイトルの要約を日本語含む kebab-case で指定する（例: `terraformでaws-control-tower-account-factoryを使ったら-ou-is-not`）

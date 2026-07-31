@@ -6,7 +6,7 @@
       "description": "Qiita CLI + pnpm + GitHub Actions による記事管理基盤を構築する",
       "scope": ["pnpm + @qiita/qiita-cli 導入", "GitHub Actions ワークフロー", "private: true デフォルト化", "harness 導入"],
       "out_of_scope": ["記事内容の編集", "CI の拡張"],
-      "acceptance": ["pnpm install が成功する", "pnpm new で private: true の記事が作成される", "./harness/init.sh が正常終了する"],
+      "acceptance": ["mise run install が成功する", "mise run new で private: true の記事が作成される", "./harness/init.sh が正常終了する"],
       "verify": "./harness/init.sh",
       "dependencies": [],
       "status": "in-progress",

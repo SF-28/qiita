@@ -1,3 +1,27 @@
 [tools]
 node = "24.16.0"
 "npm:pnpm" = "11.5.3"
+
+[tasks.install]
+description = "依存をインストールする"
+run = "pnpm install"
+
+[tasks.login]
+description = "Qiita CLI にログインする"
+run = "pnpm exec qiita login"
+
+[tasks.new]
+description = "新規記事を作成する (usage: mise run new <basename>)"
+run = "bash scripts/new.sh"
+
+[tasks.preview]
+description = "ローカルプレビューを起動する"
+run = "pnpm exec qiita preview"
+
+[tasks.pull]
+description = "Qiita から記事を同期する (上書きは mise run pull -- --force)"
+run = "pnpm exec qiita pull"
+
+[tasks.publish]
+description = "記事を Qiita へ公開する"
+run = "pnpm exec qiita publish --all"

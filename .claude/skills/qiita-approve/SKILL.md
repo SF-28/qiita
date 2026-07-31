@@ -17,7 +17,7 @@ description: Qiita 記事の社内承認申請に必要な情報を出力する�
 2. アップロード済みなら最新化する
    - 未コミットの変更があれば `git stash` で退避する
    - `git pull --rebase` で origin の `Updated by qiita-cli`（`id`、`updated_at`）を取り込む
-   - Qiita の Web 編集も反映する場合は `pnpm pull -- --force`。plain な `pnpm pull` はローカルで変更済みの記事をスキップするため `--force` が要る（限定共有記事は `qiita.config.json` の `includePrivate: true` が前提）
+   - Qiita の Web 編集も反映する場合は `mise run pull -- --force`。plain な `mise run pull` はローカルで変更済みの記事をスキップするため `--force` が要る（限定共有記事は `qiita.config.json` の `includePrivate: true` が前提）
    - 退避した変更は `git stash pop` で戻す
 3. まだアップロードされていない場合は、CI の完了を待つようユーザーに案内し、ここで止める
 
