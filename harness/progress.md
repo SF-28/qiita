@@ -90,18 +90,26 @@
     明示 / トークン消費を「約 15 倍」へ具体化 / 参考リンク [5] を正式タイトルへ /
     LangGraph 記事に無い「状態に応じて Prompt を変える」を「出力形式を固定する」へ差し替え
 
+### What's Done（追記 2026-07-31 夕方）
+
+- [x] s-56 記事（`c98c7f3e843d7a3186da`）は **7/23 に承認・一般公開済み**だったと判明
+  （`private: false` / `organization_url_name: oec`）。前回の「承認申請の入力が未完了」は誤りだった
+- [x] `4f3323c` CI 失敗（run `30608185473` / `30609019747`）を解消
+  - 真因: 上記の公開状態がローカル未反映で、publish が「Qiita 上の記事より古い」と判定して exit 1。
+    `qiita publish --all` は 1 件でも Qiita 側が新しいと**全体を中断**するため、新規記事も作成されなかった
+  - `mise run pull -- --force` で同期。差分は frontmatter 3 行のみ、本文の変更なし
+  - `qiita.com` はサンドボックスの DNS 制限で弾かれるため、pull は sandbox 無効化が必要
+
 ### What's In Progress
 
 - 未 push（5 コミット）。push は即公開に繋がるためユーザー承認待ち
 
 ### What's Next
 
-0. 未 push の 8 コミット（`4c37756` / `023b8ef` / `1b80bdd` / `eb2bfd7` / `e0e29c7` /
-   `a844706` / `483784c` / `0e466ea`）を承認後に push する。CI が走り、新規記事は**限定共有**で
-   Qiita に作成される（`id` の書き戻しコミットが origin/main に載る）
+0. `4f3323c` を push して CI を復旧させる。成功すれば新規記事が**限定共有**で Qiita に作成される
+   （`id` の書き戻しコミットが origin/main に載る）
 1. push 後に `/qiita-approve` で承認申請情報を出力し、社内ワークフローへ入力
 2. 承認後に `/qiita-publish` で Organization 紐づけ・一般公開
-3. s-56 記事（`c98c7f3e843d7a3186da`）の承認申請は出力済み。社内ワークフローへの入力が未完了
 4. 残りの記事ネタ seed（s-57〜s-60）から次の記事を執筆
 5. dotfiles 側スクリプトの誤り2件（deferred 記録済み）を別セッションで修正
 
