@@ -199,21 +199,33 @@ Graph Engineeringの目的は、単にNodeやAgentを増やすことではない
 概念的には、次のような構成になる。
 
 ```mermaid
-flowchart LR
-    Start[入力] --> Classify[分類]
-    Classify -->|意味判断が必要| Agent[Agentによる判断]
-    Classify -->|規則で処理可能| Code[コードによる処理]
+flowchart TD
+    In["入力"] --> Pre["正規化・権限チェック：コード"]
+    Pre --> Plan["計画の作成：Agent"]
 
-    Agent --> Validate[検証]
-    Code --> Validate
+    subgraph Investigate["調査Subgraph"]
+        Query["検索クエリの生成：Agent"] --> Fetch["検索・取得：コード"]
+        Fetch --> Extract["読解・抽出：Agent"]
+        Extract -->|情報が足りない| Query
+    end
 
-    Validate -->|合格| Complete[完了]
-    Validate -->|修正可能| Retry[再試行]
-    Validate -->|判断が必要| Human[人間による確認]
+    Plan --> Query
+    Extract --> Aggregate["集計・突合：コード"]
+    Aggregate --> Draft["草案の作成：Agent"]
+    Draft --> Verify["Schema検証・テスト：コード"]
 
-    Retry --> Agent
-    Human --> Complete
+    Verify -->|不合格| Draft
+    Verify -->|合格| Review["独立レビュー：Agent"]
+
+    Review -->|要修正| Plan
+    Review -->|判断が必要| Human["人間による確認"]
+    Review -->|問題なし| Done["完了"]
+    Human --> Done
 ```
+
+ここで重要なのは、AgentとコードがGraphの入口で二者択一になっていないことである。
+
+一つのタスクは、正規化、計画、調査、集計、草案、検証、レビューという段階を進む中で、両者を何度も行き来する。Subgraphの内部では、Agentが自分のLoopを回している。
 
 このGraphには、性質の異なる処理が混在している。
 
@@ -222,6 +234,8 @@ flowchart LR
 * Agentには必要な範囲だけ自律性を与える
 * 重要な処理には検証や人間承認を配置する
 * Stateを使って中断、再開、再試行を管理する
+
+戻り先も一つではない。検証で落ちたときは草案へ、レビューで方針が問題だと判断されたときは計画へ戻すというように、失敗の種類に応じて再試行の粒度を変えられる。
 
 Graph Engineeringの価値は、Agentを増やすことよりも、`どこへ、どの程度の自律性を配置するか`をシステム全体で考えられることにある。
 
