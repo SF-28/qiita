@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-07-31
+**Last Updated:** 2026-08-01
 **Active Feature:** ツールチェーン整備（mise 導入 + qiita-cli バージョンアップ）
 
 ## Status
@@ -129,6 +129,17 @@
   - `updated_at` をリモート値（`2026-08-01T11:58:19+09:00`）へ合わせて再 push
 
 ### What's In Progress
+
+- [ ] Graph Engineering 記事の Mermaid 図を差し替え（**未コミット・未 push**）
+  - 指摘: 旧図は入口の分類ノードで Agent / コードへ一度きり分岐しており、二者択一に見える。
+    実際は多段で両方を経由する
+  - 対応: 分類ノードを廃止し `コード → Agent → コード → Agent → コード → Agent` の多段構成へ。
+    `調査Subgraph` で Node 内の Agent Loop を明示。再試行の戻り先を粒度別に 2 系統
+    （検証失敗 → 草案 / レビュー指摘 → 計画）に分離。機械的検証と独立レビューを分離
+  - 本文にも 2 段落追記（二者択一ではないこと、戻り先が一つではないこと）
+  - **未検証**: Mermaid のレンダリング。subgraph 境界をまたぐ辺を使っているため
+    `mise run preview` で目視確認が必要
+  - 次の一手: 図を確認 → 問題なければ commit → push（CI が Qiita へ反映）
 
 - 未 push（5 コミット + 上記の未コミット変更）。push は即公開に繋がるためユーザー承認待ち
 
