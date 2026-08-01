@@ -100,9 +100,26 @@
   - `mise run pull -- --force` で同期。差分は frontmatter 3 行のみ、本文の変更なし
   - `qiita.com` はサンドボックスの DNS 制限で弾かれるため、pull は sandbox 無効化が必要
 
+### What's Done（追記 2026-08-01）
+
+- [x] Graph Engineering 記事の**出典の位置づけと主張の強度**を調整（ユーザー指摘 6 点、未コミット）
+  - `Awesome Graph Engineering` を「コミュニティ資料」→「個人が公開したキュレーション資料」に修正。
+    分野の合意ではなくキュレーターの作業定義である旨を明記
+  - LangChain を「LangGraph の開発元」と明示し、両者を同格の定義主体に見せない構成へ
+  - 「定義もまだ固まっていない」→「今回確認した資料の範囲では、指す対象もまだ一定していない」に限定
+  - 記事独自の定義の直後に「業界標準ではなく本記事の作業定義」と注記
+  - 参考リンクを**種別（査読論文 / プレプリント / 企業公式ブログ / 個人キュレーション）付きの表**に変更
+  - 査読版がある 4 件を正式版へ差し替え（arXiv は併記）。本文の出典マーカーも `[arXiv]` から
+    発表先表記へ変更
+    - ReAct → ICLR 2023 (openreview `WE_vluYUL-X`)
+    - AutoGen → COLM 2024 (Microsoft Research 出版ページ)
+    - GPTSwarm → ICML 2024 (PMLR v235 `zhuge24a`)
+    - MAST → NeurIPS 2025 Datasets and Benchmarks Track (proceedings.neurips.cc)
+  - DyLAN は COLM 2024 採択の可能性があるが一次ソースで確認できず、arXiv／プレプリント表記のまま
+
 ### What's In Progress
 
-- 未 push（5 コミット）。push は即公開に繋がるためユーザー承認待ち
+- 未 push（5 コミット + 上記の未コミット変更）。push は即公開に繋がるためユーザー承認待ち
 
 ### What's Next
 
