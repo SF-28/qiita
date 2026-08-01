@@ -18,29 +18,31 @@ agreed_posting_campaign_term: false
 
 最近、AIエージェント開発の文脈で `Graph Engineering` という言葉を見かけるようになった。
 
-2026年7月には「LoopからGraphへ移ったのか」という議論が実務家の間で注目され、LangChainもGraph Engineeringをテーマにした記事を公開している。ただし、その記事自身が、AgentシステムをGraphとして表現する考え方は以前から存在しており、Graph Engineeringは新しい名前であって新しい発想ではないと説明している。([langchain.com][1])
+2026年7月には「LoopからGraphへ移ったのか」という議論が実務家の間で注目され、LangGraphを開発するLangChainも、Graph Engineeringをテーマにした記事を公開している。ただし、その記事自身が、AgentシステムをGraphとして表現する考え方は以前から存在しており、Graph Engineeringは新しい名前であって新しい発想ではないと説明している。([langchain.com][1])
 
-当初は、次のような技術を想像していた。
+当初、私は次のような技術を想像していた。
 
 > 複数のAgentをNodeとして接続すれば、単一のAgent Loopよりも自律性が高まり、人間の手離れも良くなるのではないか。
 
 しかし、関連する研究や実装の歴史を追ってみると、それほど単純な進化関係ではなかった。
 
-Graph Engineeringは、Agentをさらに自由に動かすためだけの考え方ではない。むしろ、Agent、ツール、通常プログラム、検証、人間の判断などを含む複雑なシステムについて、その実行構造自体を設計・観測・評価・改善の対象として扱う視点だと考えると理解しやすい。
+Graph Engineeringは、Agentをさらに自由に動かすためだけの考え方ではない。
+
+むしろ、Agent、ツール、コードで規定する処理、検証、人間の判断などを含む複雑なシステムについて、`実行構造そのものを設計・観測・評価・改善の対象として扱う視点`だと考えると理解しやすい。
 
 ---
 
 ## Graph Engineeringという言葉はまだ定まっていない
 
-今回確認した範囲では、AIエージェント分野における `Graph Engineering` に、広く合意された定義や標準仕様は見つけられなかった。
+`Graph Engineering` という言葉が指す範囲は、現時点では資料によって異なる。今回確認した範囲では、AIエージェント分野における広く合意された定義や標準仕様は見つけられなかった。
 
-実際、現在の資料でも扱う範囲には違いがある。
+LangGraphの開発元であるLangChainは、単一Agentの循環的な処理や、コードで実行経路を規定した処理とAgentによる判断を組み合わせた構造も含めて、AgentシステムをGraphとして表現する考え方を、広い意味でGraph Engineeringと捉えている。([langchain.com][1])
 
-LangChainは、単一Agentの循環的な処理や、通常プログラムとAgentを組み合わせた実行構造も含めて、AgentシステムをGraphとして表現する考え方をGraph Engineeringと呼んでいる。([langchain.com][1])
+一方、個人が公開したキュレーション資料である `Awesome Graph Engineering` は、Graph Engineeringを新興の非標準用語と明記したうえで、複数の独立したAgent、明示的な協調関係、検査可能なGraph構造を最低条件とする、より狭い作業定義を採用している。([GitHub][2])
 
-一方、コミュニティ資料の `Awesome Graph Engineering` は、Graph Engineeringを新興の非標準用語と明記したうえで、複数の独立したAgent、明示的な協調関係、検査可能なGraph構造を最低条件とする、より狭い作業定義を採用している。([GitHub][2])
+ただし、後者は分野全体で合意された定義ではなく、キュレーターが資料を整理するために設定した作業定義である。ここでは、同時期の資料間でもGraph Engineeringが指す対象範囲が一致していない一例として参照している。
 
-つまり、現時点では次のような点も統一されていない。
+今回確認した資料の範囲では、少なくとも次のような点が一致していない。
 
 * 単一Agent内部のGraphを含めるか
 * 複数Agentが必須か
@@ -51,6 +53,8 @@ LangChainは、単一Agentの循環的な処理や、通常プログラムとAge
 そのため、本記事では特定の定義を正解とはせず、次のように広く捉える。
 
 > LLMを含む実行システムの構成要素と関係をGraphとして表し、その構造を設計・実行・観測・評価・改善する実践。
+
+なお、これは業界標準として確立された定義ではなく、本記事の議論を整理するための作業定義である。
 
 ---
 
@@ -67,14 +71,14 @@ Graph Engineeringという呼称が注目されたのは最近だが、その背
         ↓
 Stateを持つ長時間・循環的な実行
         ↓
-実行構造自体の評価・最適化
+実行構造そのものの評価・最適化
 ```
 
 ### Agent Loop
 
-2022年に公開されたReActは、LLMによる推論と外部環境に対する行動を交互に実行する方法を示した。
+2022年にプレプリントが公開され、ICLR 2023で発表されたReActは、LLMによる推論と外部環境に対する行動を交互に実行する方法を示した。
 
-Agentが状況を観察し、考え、ツールを使い、その結果を再び観察するという現在のAgent Loopにつながる代表的な研究である。([アーカイブ][3])
+Agentが状況を観察し、考え、ツールを使い、その結果を再び観察するという、現在のAgent Loopにつながる代表的な研究である。([ICLR 2023][3])
 
 ```text
 考える
@@ -88,45 +92,58 @@ Agentが状況を観察し、考え、ツールを使い、その結果を再び
 
 この構造では、次に何をするかの大部分を一つのモデルが判断する。
 
-柔軟性は高い一方、すべての判断をモデルへ委ねるため、特定の順序を守らせたい場合や、権限・検証・停止条件を厳密に制御したい場合には、追加の仕組みが必要になる。
+柔軟性は高い一方で、すべての判断をモデルへ委ねるため、特定の順序を守らせたい場合や、権限、検証、停止条件を厳密に制御したい場合には追加の仕組みが必要になる。
 
 ### Multi-Agentの協調
 
-2023年に公開されたAutoGenは、LLM、ツール、人間などを組み合わせた複数Agentが、会話を通じて協調するフレームワークを提示した。
+2023年にプレプリントが公開され、COLM 2024で発表されたAutoGenは、LLM、ツール、人間などを組み合わせた複数Agentが、会話を通じて協調するフレームワークを提示した。
 
-固定された対話順序だけでなく、LLMが次に呼ぶAgentを選択する動的な構成も扱っている。([アーカイブ][4])
+固定された対話順序だけでなく、LLMが次に呼ぶAgentを選択する動的な構成も扱っている。([COLM 2024][4])
 
-同年のDyLANは、Agentをネットワーク上のNode、Agent間のメッセージをEdgeとして表現し、タスクに応じたAgent選択や早期停止によって、協調構造を動的に変える方法を研究している。([アーカイブ][5])
+同じく2023年に公開されたDyLANは、Agentをネットワーク上のNode、Agent間のメッセージをEdgeとして表現し、タスクに応じたAgent選択や早期停止によって、協調構造を動的に変える方法を研究している。([arXiv][5])
 
 この段階になると、問題は個々のAgentの能力だけではなくなる。
 
 * どのAgentを参加させるか
 * 誰が誰へ情報を渡すか
 * どの順序で処理するか
-* どこで合意・検証するか
+* どこで合意や検証を行うか
 * いつ処理を終了するか
 
-といった、Agent間の関係もシステム性能を左右する。
+こうしたAgent間の関係も、システム全体の性能を左右する。
 
 ### StatefulなGraph Runtime
 
 LangGraphは2024年1月に、Agent Runtimeで必要となる循環的な処理を、共有State、Node、Edgeを持つGraphとして構築するために公開された。
 
-単純なAgent Loopへすべての判断を任せるのではなく、特定のツールを先に呼ばせる、出力形式を固定する、人間の確認を挟むといった制御を加えやすくすることが、当初からの目的として説明されている。([langchain.com][6])
+単純なAgent Loopへすべての判断を任せるのではなく、次のような制御を加えやすくすることが、当初からの目的として説明されている。([langchain.com][6])
+
+* 特定のツールを先に呼ばせる
+* 出力形式を固定する
+* 検証処理を通過させる
+* 人間の確認を挟む
+* 再試行回数に上限を設ける
 
 ここで重要なのは、Graphが必ずしもDAGではないことだ。
 
-Agentシステムでは、再試行、追加調査、修正、ユーザーへの確認などが必要になるため、実際のGraphには循環が含まれることが多い。LangChainも、Agent Graphは一般にDAGとは限らず、Loopは循環Graphの単純な形として捉えられると説明している。([langchain.com][1])
+Agentシステムでは、再試行、追加調査、修正、ユーザーへの確認などが必要になる。そのため、実際のGraphには循環が含まれることが多い。
 
-### Graph構造自体の最適化
+LangChainも、Agent Graphは一般にDAGとは限らず、Loopは循環Graphの単純な形として捉えられると説明している。([langchain.com][1])
+
+### Graph構造そのものの最適化
 
 2024年にICMLで発表されたGPTSwarmは、LLM呼び出しやツール利用をNode、処理や通信の関係をEdgeとして表し、Agentや複数Agentの構成を最適化可能なGraphとして扱った。
 
-Promptだけでなく、NodeやEdge、Agent間の接続構造そのものを、進化的手法や強化学習などによって改善する方向性を示している。([アーカイブ][7])
+Promptだけでなく、Node、Edge、Agent間の接続構造そのものを、進化的手法や強化学習などによって改善する方向性を示している。([ICML 2024][7])
 
-2026年のWorkflow Optimizationに関するサーベイでは、LLM呼び出し、検索、ツール利用、コード実行、メモリ更新、検証などを組み合わせたWorkflowを `Agentic Computation Graph` として統一的に整理している。
+2026年に公開されたWorkflow Optimizationに関するサーベイ（プレプリント）では、LLM呼び出し、検索、ツール利用、コード実行、メモリ更新、検証などを組み合わせたWorkflowを、`Agentic Computation Graph`として統一的に整理している。
 
-そこでは、固定されたGraphだけでなく、実行前にGraphを生成・選択する方法や、実行途中に構造を変更する方法まで研究対象に含まれている。([アーカイブ][8])
+そこでは、固定されたGraphだけでなく、次のような仕組みまで研究対象に含まれている。([arXiv][8])
+
+* 実行前にGraphを生成する
+* タスクに応じてGraphを選択する
+* 実行途中にGraph構造を変更する
+* 実行結果に基づいてGraphを改善する
 
 この流れを踏まえると、Graph Engineeringは突然生まれた新技術というより、
 
@@ -140,10 +157,10 @@ Promptだけでなく、NodeやEdge、Agent間の接続構造そのものを、�
 
 初期のAgentでは、一つのモデルがツールを使いながらLoopを回す構成でも、多くのことを試せた。
 
-しかし、Agentシステムが実務へ広がるにつれて、次のような構成が増えている。
+しかし、Agentシステムが実務へ広がるにつれて、次のような構成要素が増えている。
 
 * LLMによる意味判断
-* 通常プログラムによる確定的な処理
+* コードで処理手順や判定条件を規定した処理
 * 検索やコード実行などのツール
 * 長時間処理のためのStateやMemory
 * 専門性の異なるAgent
@@ -151,11 +168,11 @@ Promptだけでなく、NodeやEdge、Agent間の接続構造そのものを、�
 * 人間による承認
 * 失敗時の再試行やエスカレーション
 
-2026年のWorkflow Optimizationサーベイも、現在のAgentシステムでは、個々のモデル呼び出しだけでなく、何を、いつ呼び、どのように情報を流すかというWorkflow構造が、品質と効率の双方へ影響すると整理している。([アーカイブ][8])
+2026年のWorkflow Optimizationサーベイも、現在のAgentシステムでは、個々のモデル呼び出しだけでなく、`何を、いつ呼び、どのように情報を流すか`というWorkflow構造が、品質と効率の双方へ影響すると整理している。([arXiv][8])
 
 さらに、LangChainは最近の変化として、GraphのNodeに単純なLLM呼び出しだけでなく、独自のLoopを持つAgent全体を配置できるようになったことを挙げている。
 
-つまり、現在は「処理をGraphにする」だけでなく、`自律的に動くAgent同士をGraphとして組み合わせる` ことが現実的な選択肢になりつつある。([langchain.com][1])
+つまり、現在は「処理をGraphにする」だけでなく、`自律的に動くAgent同士をGraphとして組み合わせる`ことが現実的な選択肢になりつつある。([langchain.com][1])
 
 この複雑化によって、関心の対象がAgent単体からシステム全体へ広がった。
 
@@ -177,34 +194,36 @@ Graph Engineeringの目的は、単にNodeやAgentを増やすことではない
 
 本記事では、次のように捉えている。
 
-> Agentシステムの実行構造を第一級の設計対象とし、Agent、通常プログラム、ツール、State、検証、人間判断を、適切な関係と境界で組み合わせること。
+> Agentシステムの実行構造を第一級の設計対象とし、Agent、コードで規定する処理、ツール、State、検証、人間判断を、適切な関係と境界で組み合わせること。
 
 概念的には、次のような構成になる。
 
 ```mermaid
 flowchart LR
-    A[入力] --> B[分類・計画]
-    B --> C[Agent Loop]
-    B --> D[通常プログラム]
+    Start[入力] --> Classify[分類]
+    Classify -->|意味判断が必要| Agent[Agentによる判断]
+    Classify -->|規則で処理可能| Code[コードによる処理]
 
-    C --> E[検証Gate]
-    D --> E
+    Agent --> Validate[検証]
+    Code --> Validate
 
-    E -->|再実行| C
-    E -->|要確認| F[人間による判断]
-    E -->|合格| G[結果出力]
-    F --> G
+    Validate -->|合格| Complete[完了]
+    Validate -->|修正可能| Retry[再試行]
+    Validate -->|判断が必要| Human[人間による確認]
+
+    Retry --> Agent
+    Human --> Complete
 ```
 
-このGraphには、異なる性質の処理が混在している。
+このGraphには、性質の異なる処理が混在している。
 
-* 曖昧な意味判断はLLMへ任せる
-* 厳密な計算や検証は通常プログラムへ任せる
+* 曖昧な意味判断はLLMへ委ねる
+* 手順や判定条件を明示できる処理はコードで実行する
 * Agentには必要な範囲だけ自律性を与える
-* 重要な処理には検証や人間承認を置く
-* Stateを使って中断・再開や再試行を管理する
+* 重要な処理には検証や人間承認を配置する
+* Stateを使って中断、再開、再試行を管理する
 
-Graph Engineeringの価値は、Agentを増やすことよりも、`どこへ、どの程度の自律性を配置するか` をシステム全体で考えられることにある。
+Graph Engineeringの価値は、Agentを増やすことよりも、`どこへ、どの程度の自律性を配置するか`をシステム全体で考えられることにある。
 
 ---
 
@@ -218,7 +237,7 @@ Graphと実行基盤を適切に設計した場合に、取り組みやすくな
 
 Agentシステムの失敗は、個々のPromptやモデル能力だけが原因とは限らない。
 
-たとえば、次のような問題が考えられる。
+例えば、次のような問題が考えられる。
 
 * 必要な情報が後続Agentへ渡らない
 * 同じ処理が複数Agentで重複する
@@ -227,15 +246,24 @@ Agentシステムの失敗は、個々のPromptやモデル能力だけが原因
 * 終了条件が不適切で処理が続きすぎる
 * 一つのAgentへ権限や責務が集中しすぎる
 
-2025年のMulti-Agent System Failure Taxonomyに関する研究では、複数のMulti-Agentフレームワークの実行Traceを分析し、システム設計、Agent間の不整合、タスク検証に関する失敗パターンを分類している。([アーカイブ][9])
+NeurIPS 2025で発表されたMulti-Agent System Failure Taxonomyの研究では、複数のMulti-Agentフレームワークの実行Traceを分析し、システム設計、Agent間の不整合、タスク検証に関する失敗パターンを分類している。([NeurIPS 2025][9])
 
 このような失敗は、個々のPromptを改善するだけでは解消できない可能性がある。
 
-Graphとして関係を表現すれば、問題をNode単体ではなく、情報経路、役割分担、検証位置、終了条件などの構造から分析できる。
+Graphとして関係を表現すれば、問題をNode単体ではなく、次のような構造から分析できる。
 
-### 決定的処理とAgent処理を組み合わせやすい
+* 情報の経路
+* 役割分担
+* 検証を配置する位置
+* 権限の境界
+* 再試行の経路
+* 終了条件
+
+### コードで規定する処理とAgentによる判断を組み合わせやすい
 
 AgentシステムのすべてをLLMへ任せる必要はない。
+
+例えば、次の処理は、一般にLLMへ判断させるよりもコードとして実装した方が適している。
 
 * Schema検証
 * 数値計算
@@ -245,15 +273,28 @@ AgentシステムのすべてをLLMへ任せる必要はない。
 * 集計
 * 条件判定
 
-といった処理は、通常プログラムの方が低コストで再現性も高い。
+これらは、処理手順や合否条件を明示しやすい。
 
-LangChainも、Graphを利用する価値の一つとして、モデルによる推論が必要な箇所と、コードで確実に処理すべき箇所を組み合わせられることを挙げている。([langchain.com][1])
+コードとして実装することで、LLMに実行させる場合よりも、一般に次の性質を得やすくなる。
 
-Graphとして設計することで、`どこでAgentを使わないか` も明示的に考えやすくなる。
+* 低コスト
+* 高速
+* 再現しやすい
+* テストしやすい
+* 失敗原因を追跡しやすい
+* 入出力条件を明示しやすい
+
+ただし、コードで実装すれば常に正しいわけではない。
+
+実装上の不具合、外部状態への依存、仕様の誤りは発生する。ここでの論点は正しさの保証ではなく、`処理手順と判定条件を明示し、検証可能な形で実装できるか`である。
+
+LangChainも、Graphを利用する価値の一つとして、モデルによる推論が必要な箇所と、コードで処理する箇所を組み合わせられることを挙げている。([langchain.com][1])
+
+Graphとして設計することで、`どこでAgentを使わないか`も明示的に考えやすくなる。
 
 ### Stateと責任範囲を明示できる
 
-Nodeごとに次のような境界を定義できる。
+Nodeごとに、次のような境界を定義できる。
 
 * 何を入力として受け取るか
 * 何を変更できるか
@@ -264,9 +305,17 @@ Nodeごとに次のような境界を定義できる。
 
 Stateの共有方法は一つではない。
 
-共有オブジェクト、ファイル、データベース、成果物への参照、検索可能な外部メモリなどを使える。
+* 共有オブジェクト
+* ファイル
+* データベース
+* 成果物への参照
+* 検索可能な外部メモリ
 
-重要なのは、すべてを無条件に共有することではなく、`どの情報を、どのNodeへ、どの粒度で渡すか` を設計することである。
+重要なのは、すべてを無条件に共有することではない。
+
+> どの情報を、どのNodeへ、どの粒度で渡すか
+
+を設計することが重要になる。
 
 ### 検証や権限制御を構造へ組み込める
 
@@ -283,22 +332,26 @@ Graphには、Agent以外の処理も含められる。
 
 特に、生成するAgentとは別に検証する処理を置くことで、作成者自身だけを最終評価者にしない構成を作れる。
 
-### Workflow構造自体を評価・改善できる
+### Workflow構造そのものを評価・改善できる
 
-Graph Engineeringの比較的特徴的な視点は、個々のAgentやPromptだけでなく、Workflow構造自体を改善対象にすることだ。
+Graph Engineeringの特徴的な視点は、個々のAgentやPromptだけでなく、Workflow構造そのものを改善対象にすることだ。
 
-たとえば、次のような変更を比較できる。
+例えば、次のような変更を比較できる。
 
 * Verifierを追加する
 * 不要なAgent間通信を削る
 * Agentの実行順序を変える
-* 一部のNodeを通常プログラムへ置き換える
+* 一部のLLM Nodeをコード処理へ置き換える
 * タスクに応じて使用するSubgraphを変える
 * 低価値なAgentを実行時に除外する
 
-2026年のサーベイでは、Workflowを再利用可能なテンプレート、実行ごとに具体化されたGraph、実際の実行Traceへ分け、品質、コスト、堅牢性、構造変化を評価する枠組みを提示している。([アーカイブ][8])
+2026年のサーベイでは、Workflowを次の3つに分け、品質、コスト、堅牢性、構造変化を評価する枠組みを提示している。([arXiv][8])
 
-つまり、Graphは単なる実装形式ではなく、`測定して改善できる成果物` になり得る。
+* 再利用可能なテンプレート
+* 実行ごとに具体化されたGraph
+* 実際の実行Trace
+
+つまり、Graphは単なる実装形式ではなく、`測定して改善できる成果物`になり得る。
 
 ---
 
@@ -312,32 +365,38 @@ Graphは実行構造であり、個々のAgentの能力を自動的に高める�
 
 不適切なAgent、曖昧な責務、弱い検証を接続すれば、失敗が複雑化するだけかもしれない。
 
-LangChainも、汎用的なDeep Researchのように事前に処理経路を決めにくいタスクの例として、GPT Researcherが定義済みGraphから、計画・委譲・Context管理をAgentへ任せる構成へ移行した事例を紹介している。([langchain.com][1])
+LangChainは、汎用的なDeep Researchのように、事前に処理経路を決めにくいタスクの例として、GPT Researcherが定義済みGraphから、計画、委譲、Context管理をAgentへ任せる構成へ移行した事例を紹介している。([langchain.com][1])
 
-Graphは、自由度を下げる代わりに制御を得る場合もあれば、動的なRoutingによって自由度を残す場合もある。
+Graphは、実行経路を規定して制御を得る場合もあれば、動的なRoutingによって柔軟性を残す場合もある。
 
-どちらが適切かは、タスクによって異なる。
+どちらが適切かはタスクによって異なる。
 
 ### Multi-Agentにすれば品質が上がるわけではない
 
 複数Agentは、専門化、並列化、独立評価などの価値を持ち得る。
 
-一方で、Multi-Agent Systemの性能向上が小さいケースや、Agent間の情報欠落、役割逸脱、重複実行、検証不足などの失敗も報告されている。([アーカイブ][9])
+一方で、Multi-Agent Systemの性能向上が小さいケースや、次のような失敗も報告されている。([NeurIPS 2025][9])
 
-AnthropicのMulti-Agent Researchシステムでは、並列調査や単一Context Windowを超える情報量を扱える利点が得られた一方、同社の計測条件では通常のチャットの約15倍のトークンを使用したと報告されている。
+* Agent間の情報欠落
+* 役割からの逸脱
+* 重複実行
+* 調整コストの増大
+* 検証不足
 
-また、すべてのAgentが同じContextを必要とするタスクや、Agent間の依存関係が多いタスクには向きにくいと報告している。([Anthropic][10])
+Anthropicが自社のMulti-Agent Researchシステムについて公開した実装報告では、並列調査や単一Context Windowを超える情報量を扱える利点が得られた一方、同社の計測条件では通常のチャットの約15倍のトークンを使用したと述べられている。
+
+また、すべてのAgentが同じContextを必要とするタスクや、Agent間の依存関係が多いタスクには向きにくいとも説明している。([Anthropic][10])
 
 ただし、これは特定のResearchシステムにおける結果であり、Graph Engineering全般のコストを示すものではない。
 
-消費量は、主に次の設計で変わる。
+消費量は、主に次の設計によって変わる。
 
 * LLMを使うNodeの数
 * 各Nodeへ渡すContext量
 * 再試行回数
 * Agent間の通信量
-* 評価・統合処理の数
-* 通常プログラムへ切り出した範囲
+* 評価や統合処理の数
+* LLMを使わずコードで処理する範囲
 
 ### Contextの分断や膨張は必然ではない
 
@@ -351,7 +410,7 @@ Node間でContextを共有できないわけではない。
 
 Anthropicも、大きな成果物をファイルなどへ保存し、Agent間では軽量な参照を渡すことで、情報損失とトークン転送を抑える方法を紹介している。([Anthropic][10])
 
-### 一方で、単なるWorkflowの言い換えでもない
+### 単なるWorkflowの言い換えでもない
 
 Graph、State、Workflow、Multi-Agentといった個々の技術は以前から存在する。
 
@@ -363,9 +422,9 @@ Graph、State、Workflow、Multi-Agentといった個々の技術は以前から
 * Agent間の関係を契約として設計する
 * 固定構造と動的構造を混在させる
 * 実行Traceから構造を評価する
-* Graph自体を生成・選択・最適化する
+* Graph自体を生成、選択、最適化する
 
-特に、Workflow構造そのものを品質とコストの最適化対象として扱う研究は増えている。([アーカイブ][8])
+特に、Workflow構造そのものを品質とコストの最適化対象として扱う研究は増えている。([arXiv][8])
 
 したがって、Graph Engineeringを「既存技術の名前を変えただけ」と切り捨てるのも、やや狭い見方になる。
 
@@ -377,7 +436,7 @@ Graph Engineeringを調べる中で、Agentシステムを設計するうえで�
 
 いずれも完全に新しいものではなく、ソフトウェア設計、Workflow、分散システム、Agent Engineeringなどで扱われてきた考え方である。
 
-ただ、非決定的なAgentや複数の処理を接続する構造として捉え直すことで、その重要性がより具体的に見えてきた。
+ただ、出力や実行経路が変動しうるAgentと、複数の処理を接続するシステムとして捉え直すことで、その重要性がより具体的に見えてきた。
 
 ### 1. 責務と権限を明確にする
 
@@ -401,7 +460,7 @@ Agentを分離するなら、役割だけでなく、Context、ツール、変�
 
 ### 2. 入力範囲を明示する
 
-Agentが参照する情報を、無制限にしない。
+Agentが参照する情報を無制限にしない。
 
 ```yaml
 inputs:
@@ -443,7 +502,7 @@ inputs:
 
 人間が読む成果物なら、必須見出しを持つMarkdownテンプレートでもよい。
 
-重要なのは、後続のAgentやプログラムが、出力の意味を毎回推測しなくてよいことである。
+重要なのは、後続のAgentやコード処理が、出力の意味を毎回推測しなくてよいことである。
 
 ### 4. Stateの所有者と保存場所を決める
 
@@ -463,7 +522,12 @@ decisions:
   - 管理者操作を追加検証する
 ```
 
-そのうえで、どの情報が正式なStateなのか、どのNodeが更新できるのかを定める。
+そのうえで、次の点を定める。
+
+* どの情報が正式なStateか
+* どのNodeが更新できるか
+* 変更履歴をどこへ残すか
+* 複数Nodeの変更をどう統合するか
 
 ### 5. 完了条件と停止条件を定義する
 
@@ -479,25 +543,35 @@ Agentの自律性を高めることと、無制限な探索や反復を許すこ
 
 ### 6. LLMを使う場所を選ぶ
 
-意味理解、仮説生成、曖昧な評価はLLMに向いている。
+意味理解、仮説生成、複数の妥当な解釈があり得る評価は、LLMの能力を活かしやすい。
 
-一方、型検証、計算、テスト、集計、存在確認、権限判定などは通常プログラムで処理できる。
+一方で、型検証、計算、テスト、集計、存在確認、権限判定など、処理手順や判定条件を明示できるものは、原則としてコードで処理する方が適している。
 
 ```text
 意味理解・仮説生成・曖昧な評価
-→ LLM
+→ LLMによる判断
 
 型検証・計算・テスト・条件判定
-→ 通常プログラム
+→ コードによる処理
 ```
 
 Nodeを増やす場合、すべてをLLM Nodeにしてしまうと、コストと不確実性も積み重なる。
+
+判断基準は、単に「アルゴリズムで扱えるか」ではない。
+
+> 既存の方法で、必要な品質の結果を、必要な時間とコストで得られるか
+
+を考える必要がある。
+
+コードで実用的に処理できるなら、計算そのものをLLMへ任せる必要性は低い。
+
+一方、処理手順を事前に固定しにくい場合や、意味理解、探索、仮説生成が必要な場合には、LLMを利用する価値が生まれる。
 
 ### 7. Agentを分ける理由を明確にする
 
 Agentを分けること自体に価値はない。
 
-次のような理由がある場合に、分離を検討する。
+次のような理由がある場合に分離を検討する。
 
 * 異なる専門性が必要
 * 異なるContextを持たせたい
@@ -506,7 +580,7 @@ Agentを分けること自体に価値はない。
 * 並列化による効果が期待できる
 * 失敗や影響範囲を局所化したい
 
-理由を説明できなければ、単一AgentのLoopや通常プログラムの方が単純である可能性が高い。
+理由を説明できなければ、単一AgentのLoopや、Agentを使わないコード処理の方が単純である可能性が高い。
 
 ### 8. Agent単体ではなくシステム全体を評価する
 
@@ -520,7 +594,15 @@ Agentを分けること自体に価値はない。
 * Verifierが何を却下したか
 * Graph変更によって品質とコストがどう変わったか
 
-Graph Engineeringで特に再認識したのは、Agentシステムでは、`局所的に優秀なAgentを並べること` と `全体として優秀なシステムを作ること` が同じではないという点である。
+Graph Engineeringで特に再認識したのは、Agentシステムでは、
+
+> 局所的に優秀なAgentを並べること
+
+と、
+
+> 全体として優秀なシステムを作ること
+
+は同じではないという点である。
 
 ---
 
@@ -535,23 +617,24 @@ Graph Engineeringで特に再認識したのは、Agentシステムでは、`局
 * 複数の責務や権限境界がある
 * 独立した検証や反証が重要
 * 並列に処理できる作業がある
-* 長時間処理の中断・再開が必要
+* 長時間処理の中断や再開が必要
 * 実行経路や判断履歴を追跡したい
 * 同じ構造を繰り返し利用する
 * 失敗原因がAgent単体ではなく構造にありそう
 * 高価値なタスクで、追加コストを正当化できる
-* Workflow構造を評価・最適化したい
+* Workflow構造を評価、最適化したい
 
 最初から大規模なMulti-Agent Systemを作る必要はない。
 
-たとえば、次の程度でもGraph的な設計を検証できる。
+例えば、次の程度でもGraph的な設計を検証できる。
 
 ```mermaid
 flowchart LR
-    A[生成Agent] -->|構造化された成果物| B[検証処理]
+    A[生成Agent] --> B[コードによる検証]
     B -->|合格| C[完了]
-    B -->|修正理由| A
-    B -->|判断不能| D[人間へ確認]
+    B -->|修正可能| A
+    B -->|判断困難| D[人間による確認]
+    D --> C
 ```
 
 この小さな構成でも、次の論点が現れる。
@@ -564,21 +647,27 @@ flowchart LR
 * 人間へ戻す条件
 * 品質とコストの測定
 
-本番導入は具体的な課題と費用対効果から判断すべきだが、技術検証まで問題が起きるのを待つ必要はない。
+本番導入は、具体的な課題と費用対効果から判断すべきである。
+
+ただし、技術検証まで問題が起きるのを待つ必要はない。
 
 ---
 
 ## 現時点での結論
 
-Graph Engineeringという呼称は新しく、定義もまだ固まっていない。
+Graph Engineeringという呼称は新しく、今回確認した資料の範囲では、指す対象もまだ定まっていない。
 
-一方、その背景にあるAgent Loop、Multi-Agent協調、Stateful Workflow、Graph型Runtime、Workflow Optimizationには、すでに一定の研究と実装の蓄積がある。
+一方、その背景にある次の分野には、すでに一定の研究と実装の蓄積がある。
+
+* Agent Loop
+* Multi-Agent協調
+* Stateful Workflow
+* Graph型Runtime
+* Workflow Optimization
 
 そのため、Graph Engineeringを、
 
-```text
-Loop Engineeringの次に来る万能な自律化手法
-```
+> Loop Engineeringの次に来る万能な自律化手法
 
 と捉えるのは適切ではなさそうだ。
 
@@ -590,7 +679,7 @@ LoopとGraphは単純な成熟段階ではなく、扱う問題の範囲が異�
 
 一方で、Graph Engineeringを既存Workflowの単なる言い換えとして扱うのも不十分である。
 
-現在のGraph Engineeringに関する議論では、Agentを含むWorkflow構造そのものを、設計・観測・評価・生成・最適化の対象として扱う視点が強まっている。
+現在のGraph Engineeringに関する議論では、Agentを含むWorkflow構造そのものを、設計、観測、評価、生成、最適化の対象として扱う視点が強まっている。
 
 Graphを採用すれば、Agentシステムが自動的に賢く、安全に、安価になるわけではない。
 
@@ -604,24 +693,28 @@ Graph Engineeringから得た最も重要な示唆は、この問いそのもの
 
 ## 参考リンク
 
-* [3 Years of Graph Engineering with LangGraph](https://www.langchain.com/blog/3-years-of-graph-engineering-with-langgraph)
-* [Awesome Graph Engineering](https://github.com/ChaoYue0307/awesome-graph-engineering)
-* [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
-* [AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://arxiv.org/abs/2308.08155)
-* [A Dynamic LLM-Powered Agent Network for Task-Oriented Agent Collaboration（DyLAN）](https://arxiv.org/abs/2310.02170)
-* [LangGraph 公開時の記事](https://www.langchain.com/blog/langgraph)
-* [GPTSwarm: Language Agents as Optimizable Graphs](https://arxiv.org/abs/2402.16823)
-* [From Static Templates to Dynamic Runtime Graphs: A Survey of Workflow Optimization for LLM Agents](https://arxiv.org/abs/2603.22386)
-* [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)
-* [Why Do Multi-Agent LLM Systems Fail?](https://arxiv.org/abs/2503.13657)
+情報源によって検証のされ方が異なるため、種別を併記する。
+
+| 参考資料 | 種別 | 記事内での用途 |
+| - | - | - |
+| [3 Years of Graph Engineering with LangGraph](https://www.langchain.com/blog/3-years-of-graph-engineering-with-langgraph) | 企業公式ブログ | LangGraph開発元による広義の概念整理 |
+| [LangGraph](https://www.langchain.com/blog/langgraph) | 企業公式ブログ | Graph型Runtimeの設計目的 |
+| [Awesome Graph Engineering - Working Definition](https://github.com/ChaoYue0307/awesome-graph-engineering/blob/main/DEFINITION.md) | 個人キュレーション資料 | 狭義の作業定義の一例と関連資料の探索 |
+| [ReAct: Synergizing Reasoning and Acting in Language Models](https://openreview.net/forum?id=WE_vluYUL-X)（ICLR 2023 / [arXiv](https://arxiv.org/abs/2210.03629)） | 査読論文 | ReasoningとActionを組み合わせる基本概念 |
+| [AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://www.microsoft.com/en-us/research/publication/autogen-enabling-next-gen-llm-applications-via-multi-agent-conversation-framework/)（COLM 2024 / [arXiv](https://arxiv.org/abs/2308.08155)） | 査読論文・企業公式資料 | 複数Agentによる協調実装 |
+| [A Dynamic LLM-Powered Agent Network for Task-Oriented Agent Collaboration（DyLAN）](https://arxiv.org/abs/2310.02170) | プレプリント | 協調構造を動的に変える研究 |
+| [GPTSwarm: Language Agents as Optimizable Graphs](https://proceedings.mlr.press/v235/zhuge24a.html)（ICML 2024 / [arXiv](https://arxiv.org/abs/2402.16823)） | 査読論文 | Agent間構造をGraphとして最適化する研究 |
+| [From Static Templates to Dynamic Runtime Graphs: A Survey of Workflow Optimization for LLM Agents](https://arxiv.org/abs/2603.22386) | プレプリント | Workflow最適化という研究領域全体の整理 |
+| [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) | 企業公式ブログ | 実運用に近いMulti-Agent構成の実装報告 |
+| [Why Do Multi-Agent LLM Systems Fail?](https://proceedings.neurips.cc/paper_files/paper/2025/hash/b1041e52d3be19f0a9bc491657488e4a-Abstract-Datasets_and_Benchmarks_Track.html)（NeurIPS 2025 / [arXiv](https://arxiv.org/abs/2503.13657)） | 査読論文 | Multi-Agentシステムの失敗要因 |
 
 [1]: https://www.langchain.com/blog/3-years-of-graph-engineering-with-langgraph "3 Years of Graph Engineering with LangGraph"
 [2]: https://github.com/ChaoYue0307/awesome-graph-engineering/blob/main/DEFINITION.md "awesome-graph-engineering/DEFINITION.md at main · ChaoYue0307/awesome-graph-engineering · GitHub"
-[3]: https://arxiv.org/pdf/2210.03629v2 "arXiv:2210.03629v2 [cs.CL] 27 Nov 2022"
-[4]: https://arxiv.org/abs/2308.08155 "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation"
-[5]: https://arxiv.org/pdf/2310.02170v1 "arXiv:2310.02170v1 [cs.CL] 3 Oct 2023"
+[3]: https://openreview.net/forum?id=WE_vluYUL-X "ReAct: Synergizing Reasoning and Acting in Language Models (ICLR 2023)"
+[4]: https://www.microsoft.com/en-us/research/publication/autogen-enabling-next-gen-llm-applications-via-multi-agent-conversation-framework/ "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation (COLM 2024)"
+[5]: https://arxiv.org/abs/2310.02170 "Dynamic LLM-Agent Network: An LLM-agent Collaboration Framework with Agent Team Optimization"
 [6]: https://www.langchain.com/blog/langgraph "LangGraph"
-[7]: https://arxiv.org/pdf/2402.16823 "GPTSwarm: Language Agents as Optimizable Graphs"
-[8]: https://arxiv.org/html/2603.22386v1 "From Static Templates to Dynamic Runtime Graphs: A Survey of Workflow Optimization for LLM Agents"
-[9]: https://arxiv.org/abs/2503.13657 "[2503.13657] Why Do Multi-Agent LLM Systems Fail?"
+[7]: https://proceedings.mlr.press/v235/zhuge24a.html "GPTSwarm: Language Agents as Optimizable Graphs (ICML 2024)"
+[8]: https://arxiv.org/abs/2603.22386 "From Static Templates to Dynamic Runtime Graphs: A Survey of Workflow Optimization for LLM Agents"
+[9]: https://proceedings.neurips.cc/paper_files/paper/2025/hash/b1041e52d3be19f0a9bc491657488e4a-Abstract-Datasets_and_Benchmarks_Track.html "Why Do Multi-Agent LLM Systems Fail? (NeurIPS 2025 Datasets and Benchmarks Track)"
 [10]: https://www.anthropic.com/engineering/multi-agent-research-system "How we built our multi-agent research system \ Anthropic"
