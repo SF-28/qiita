@@ -1,2 +1,5 @@
 minimumReleaseAgeExclude:
   - '@qiita/qiita-cli@1.10.0'
+auditConfig:
+  ignoreGhsas:
+    - GHSA-hp3w-g68c-fv3c

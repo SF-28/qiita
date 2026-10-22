@@ -67,3 +67,15 @@ repos:
         pass_filenames: false
         verbose: true
         stages: [pre-push]
+      # 依存監査: pnpm-lock.yaml の版を既知の脆弱性と突き合わせる (pnpm audit は lockfile を読むので node_modules 不要)。
+      # 除外は pnpm-workspace.yaml の auditConfig.ignoreGhsas (package.json の pnpm フィールドは pnpm 12 で効かない)。
+      # GHSA-hp3w-g68c-fv3c: sprintf-js (qiita-cli > gray-matter > js-yaml 3.x > argparse 経由) は修正版が無いため除外。
+      #   js-yaml 3.x 系の更新で依存が外れるか gray-matter が js-yaml 4 へ移れば解消する。見直し期日 2026-11-22。
+      - id: pnpm-audit
+        name: pnpm audit (依存の脆弱性)
+        entry: pnpm audit
+        language: system
+        always_run: true
+        pass_filenames: false
+        verbose: true
+        stages: [pre-push]
