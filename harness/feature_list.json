@@ -23,6 +23,19 @@
       "dependencies": ["feat-001"],
       "status": "not-started",
       "evidence": ""
+    },
+    {
+      "id": "feat-003",
+      "name": "pnpm を mise コアへ統一",
+      "description": "npm:pnpm をやめ、package.json の packageManager (pnpm 12.8.2) を正本に mise のコア pnpm で動かす",
+      "scope": ["mise.toml から npm:pnpm を削除し idiomatic_version_file_enable_tools を設定", "package.json に packageManager を追加", "mise.lock と .mise/locks の npm-pnpm 分を整理", "pnpm-lock.yaml の再生成"],
+      "out_of_scope": ["記事内容の編集", "CI の拡張"],
+      "owns": ["mise.toml", "mise.lock", ".mise/", "package.json", "pnpm-lock.yaml"],
+      "acceptance": ["mise.toml に npm:pnpm が無く package.json に packageManager pnpm@12.8.2 がある", "pnpm --version が 12.8.2 で pnpm install --frozen-lockfile が成功する"],
+      "verify": "./harness/init.sh",
+      "dependencies": [],
+      "status": "done",
+      "evidence": "2026-10-22 worktree で mise install / pnpm --version=12.8.2 / pnpm install --frozen-lockfile / ./harness/init.sh がすべて exit 0"
     }
   ]
 }

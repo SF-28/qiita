@@ -1,6 +1,10 @@
 [tools]
 node = "26.12.1"
-"npm:pnpm" = "11.28.7"
+
+[settings]
+# pnpm の版は package.json の packageManager を正本にし、mise はそれを読む。
+# リポジトリの設定はグローバルの値を置き換え、CI はグローバル設定を読まないので明示する。
+idiomatic_version_file_enable_tools = ["pnpm"]
 
 [tasks.install]
 description = "依存をインストールする"

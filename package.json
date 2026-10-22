@@ -2,6 +2,7 @@
   "name": "qiita",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@12.8.2",
   "devDependencies": {
     "@qiita/qiita-cli": "^1.10.0"
   }

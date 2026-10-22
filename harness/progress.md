@@ -2,7 +2,7 @@
 
 ## Current State
 
-**Last Updated:** 2026-08-03
+**Last Updated:** 2026-10-22
 **Active Feature:** `qiita-create` スキルへの説明設計レイヤー統合
 
 ## Status
@@ -10,6 +10,9 @@
 ### What's Done
 
 - [x] リポジトリ初期セットアップ (feat-001)
+- [x] pnpm を `npm:pnpm` から mise コア pnpm へ統一 (feat-003): packageManager を pnpm@12.8.2 にし、
+  mise.toml に `idiomatic_version_file_enable_tools = ["pnpm"]` を設定。pnpm-lock.yaml は
+  pnpm 12 の `packageManagerDependencies` 文書が先頭に追加された (v9.0 形式のまま)
 - [x] navi 記録から Qiita 記事ネタを棚卸しし、記事候補 5 件を seed 化
   - s-56 worktree ワークフロー / s-57 sandbox・permission 摩擦最適化 / s-58 LLM-as-judge 評価
   - s-59 AWS 研修環境の Terraform 管理 / s-60 ALB の SLR 事前作成
