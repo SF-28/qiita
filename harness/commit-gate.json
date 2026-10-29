@@ -5,14 +5,14 @@
   "framework": "pre-commit",
   "tools": [
     {
-      "id": "gitleaks",
+      "id": "betterleaks",
       "stage": "pre-commit",
-      "rev": "v8.30.1"
+      "rev": "local (betterleaks 1.9.0, mise pin) — gitleaks v8.30.1 の後継として置換（2026-10-29）"
     },
     {
       "id": "commitlint",
       "stage": "commit-msg",
-      "rev": "v9.25.0"
+      "rev": "v9.27.0"
     },
     {
       "id": "hygiene",
@@ -20,9 +20,9 @@
       "rev": "v6.0.0"
     },
     {
-      "id": "actionlint",
+      "id": "jactionlint",
       "stage": "pre-commit",
-      "rev": "v1.7.12"
+      "rev": "local (jactionlint 2.3.0, mise pin) — rhysd/actionlint の hook から置換（2026-10-29）"
     }
   ]
 }

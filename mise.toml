@@ -1,5 +1,9 @@
 [tools]
 node = "26.12.1"
+# シークレットスキャン（pre-commit の betterleaks が呼ぶ）
+betterleaks = "1.9.0"
+# GitHub Actions のワークフローの lint（pre-commit の jactionlint が呼ぶ）
+jactionlint = "2.3.0"
 
 [settings]
 # pnpm の版は package.json の packageManager を正本にし、mise はそれを読む。

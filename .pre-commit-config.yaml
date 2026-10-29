@@ -6,13 +6,8 @@
 # 有効化: pre-commit install        pin 更新: pre-commit autoupdate
 default_install_hook_types: [pre-commit, commit-msg, pre-push]
 repos:
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.1
-    hooks:
-      - id: gitleaks
-        stages: [pre-commit]
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.25.0
+    rev: v9.27.0
     hooks:
       - id: commitlint
         stages: [commit-msg]
@@ -52,13 +47,25 @@ repos:
         stages: [pre-commit]
       - id: destroyed-symlinks
         stages: [pre-commit]
-  - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.12
-    hooks:
-      - id: actionlint
-        stages: [pre-commit]
   - repo: local
     hooks:
+      # betterleaks（gitleaks チームによる後継のシークレットスキャナ）。
+      # 公式 .pre-commit-hooks.yaml の betterleaks-system と同じ引数を mise 経由で実行する。
+      - id: betterleaks
+        name: betterleaks (シークレット検出)
+        entry: mise x -- betterleaks git --pre-commit --redact --staged --verbose
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+      # jactionlint (actionlint の JVM 版)。mise の host 用の道具として入れたものを呼ぶ。
+      # files / types は上流の jactionlint の hook と同じ。
+      - id: jactionlint
+        name: jactionlint (GitHub Actions のワークフロー検査)
+        entry: mise x -- jactionlint
+        language: system
+        files: ^(\.github/workflows/|\.github/dependabot\.ya?ml$|(.*/)?action\.ya?ml$)
+        types: ["yaml"]
+        stages: [pre-commit]
       - id: commit-gate-freshness
         name: commit-gate freshness check
         entry: node harness/commit-gate-check.mjs
