@@ -1,14 +1,33 @@
+# qiita の開発と pre-commit の hook で使う道具。書き方の方針は dotfiles の
+# docs/reference/repo-tooling-policy.md にある。
+# 共有する道具 (pipx:pre-commit、pipx:pre-commit-hooks) の値は手で書き換えず、
+# dotfiles の tools/distribute_shared_locks.py で配る。
 [tools]
 node = "26.12.1"
+# uv は Python を使わないこのリポジトリでも要る (配った pre-commit の依存の lock から venv を作るため)
+uv = "0.13.4"
 # シークレットスキャン（pre-commit の betterleaks が呼ぶ）
 betterleaks = "1.9.0"
 # GitHub Actions のワークフローの lint（pre-commit の jactionlint が呼ぶ）
 jactionlint = "2.3.0"
 
+"pipx:pre-commit" = { version = "4.7.0", python = "3.14.8" }
+"pipx:pre-commit-hooks" = { version = "6.0.0", python = "3.14.8" }
+
 [settings]
 # pnpm の版は package.json の packageManager を正本にし、mise はそれを読む。
 # リポジトリの設定はグローバルの値を置き換え、CI はグローバル設定を読まないので明示する。
 idiomatic_version_file_enable_tools = ["pnpm"]
+# 版を選ぶとき (node = "26" のような前方一致や latest) に、公開から 3 日経たない版を除く (mise の既定は 24 時間)。
+# 完全な版で書いた道具と mise.lock の版には効かない。版を上げるときは公開から 3 日経ったかを確かめる
+minimum_release_age = "3d"
+# 他の人の Mac と CI の分も lock に書く
+lockfile_platforms = ["macos-arm64", "macos-x64", "linux-x64"]
+
+[tasks.setup]
+description = "依存を入れ、pre-commit の hook を入れる"
+# pre-commit install は --hook-type を付けず、.pre-commit-config.yaml の default_install_hook_types の種類をすべて入れる
+run = ["pnpm install --frozen-lockfile", "pre-commit install"]
 
 [tasks.install]
 description = "依存をインストールする"

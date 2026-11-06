@@ -1,3 +1,5 @@
+# 公開から 3 日 (4320 分) 経たない版を入れない (dotfiles の docs/reference/repo-tooling-policy.md)
+minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - '@qiita/qiita-cli@1.10.0'
 auditConfig:

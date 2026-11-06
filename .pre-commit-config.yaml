@@ -3,49 +3,108 @@
 # 手編集より registry 更新 + create-harness 再実行を推奨。
 # repo 依存ツール (linter/formatter/type-checker/test/SAST/SCA 等) は registry.categories
 # (種別+例) を参考に、references/commit-gate-pattern.md の手順で承認の上ここへ追記する。
-# 有効化: pre-commit install        pin 更新: pre-commit autoupdate
+# hook はすべて repo: local で定義し、道具は mise.toml の版を mise x で呼ぶ
+# (方針は dotfiles の docs/reference/repo-tooling-policy.md)。
+# 有効化: mise install のあと mise run setup
+# 版の更新: pre-commit autoupdate は使わない。共有する道具は dotfiles の配る元で上げて配り、
+#   pre-commit-hooks の版を上げたときは、その版の .pre-commit-hooks.yaml と下の定義を見比べて直す
 default_install_hook_types: [pre-commit, commit-msg, pre-push]
 repos:
-  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.27.0
+  - repo: local
     hooks:
+      # commitlint-pre-commit-hook v9.27.0 の commitlint を、package.json の開発用の依存に置き換えたもの。
+      # pre-commit が commit-msg の段階で渡すメッセージのファイルを --edit の値として受ける。
       - id: commitlint
+        name: commitlint
+        entry: mise x -- pnpm exec commitlint --strict --edit
+        language: unsupported
+        always_run: true
         stages: [commit-msg]
-        args: ["--strict"]
-        additional_dependencies: ["@commitlint/config-conventional"]
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+  - repo: local
     hooks:
+      # pre-commit-hooks v6.0.0 の .pre-commit-hooks.yaml の定義を写し、mise の
+      # pipx:pre-commit-hooks の実行ファイルを呼ぶ。stages、exclude、args は元の設定から引き継ぐ。
       - id: trailing-whitespace
+        name: trim trailing whitespace
+        entry: mise x -- trailing-whitespace-fixer
+        language: unsupported
+        types: [text]
         stages: [pre-commit]
         exclude: '^\.claude/hooks/'
       - id: end-of-file-fixer
+        name: fix end of files
+        entry: mise x -- end-of-file-fixer
+        language: unsupported
+        types: [text]
         stages: [pre-commit]
         exclude: '^\.claude/hooks/'
       - id: check-merge-conflict
+        name: check for merge conflicts
+        entry: mise x -- check-merge-conflict
+        language: unsupported
+        types: [text]
         stages: [pre-commit]
       - id: check-added-large-files
+        name: check for added large files
+        entry: mise x -- check-added-large-files
+        language: unsupported
         stages: [pre-commit]
       - id: check-case-conflict
+        name: check for case conflicts
+        entry: mise x -- check-case-conflict
+        language: unsupported
         stages: [pre-commit]
       - id: mixed-line-ending
+        name: mixed line ending
+        entry: mise x -- mixed-line-ending
+        language: unsupported
+        types: [text]
         stages: [pre-commit]
         exclude: '^\.claude/hooks/'
       - id: check-yaml
+        name: check yaml
+        entry: mise x -- check-yaml
+        language: unsupported
+        types: [yaml]
         stages: [pre-commit]
         # pnpm-lock.yaml は供給網検証セクションと lockfile 本体の複数ドキュメント構成
         args: [--allow-multiple-documents]
       - id: check-json
+        name: check json
+        entry: mise x -- check-json
+        language: unsupported
+        types: [json]
         stages: [pre-commit]
       - id: check-toml
+        name: check toml
+        entry: mise x -- check-toml
+        language: unsupported
+        types: [toml]
         stages: [pre-commit]
       - id: detect-private-key
+        name: detect private key
+        entry: mise x -- detect-private-key
+        language: unsupported
+        types: [text]
         stages: [pre-commit]
       - id: check-shebang-scripts-are-executable
+        name: check that scripts with shebangs are executable
+        entry: mise x -- check-shebang-scripts-are-executable
+        language: unsupported
+        types: [text]
         stages: [pre-commit]
+      # 実行ファイルの無い language: fail の hook なので、定義をそのまま写す
       - id: forbid-submodules
+        name: forbid submodules
+        entry: 'submodules are not allowed in this repository:'
+        language: fail
+        types: [directory]
         stages: [pre-commit]
       - id: destroyed-symlinks
+        name: detect destroyed symlinks
+        entry: mise x -- destroyed-symlinks
+        language: unsupported
+        types: [file]
         stages: [pre-commit]
   - repo: local
     hooks:
@@ -54,7 +113,7 @@ repos:
       - id: betterleaks
         name: betterleaks (シークレット検出)
         entry: mise x -- betterleaks git --pre-commit --redact --staged --verbose
-        language: system
+        language: unsupported
         pass_filenames: false
         stages: [pre-commit]
       # jactionlint (actionlint の JVM 版)。mise の host 用の道具として入れたものを呼ぶ。
@@ -62,14 +121,14 @@ repos:
       - id: jactionlint
         name: jactionlint (GitHub Actions のワークフロー検査)
         entry: mise x -- jactionlint
-        language: system
+        language: unsupported
         files: ^(\.github/workflows/|\.github/dependabot\.ya?ml$|(.*/)?action\.ya?ml$)
         types: ["yaml"]
         stages: [pre-commit]
       - id: commit-gate-freshness
         name: commit-gate freshness check
-        entry: node harness/commit-gate-check.mjs
-        language: system
+        entry: mise x -- node harness/commit-gate-check.mjs
+        language: unsupported
         always_run: true
         pass_filenames: false
         verbose: true
@@ -80,8 +139,8 @@ repos:
       #   js-yaml 3.x 系の更新で依存が外れるか gray-matter が js-yaml 4 へ移れば解消する。見直し期日 2026-11-22。
       - id: pnpm-audit
         name: pnpm audit (依存の脆弱性)
-        entry: pnpm audit
-        language: system
+        entry: mise x -- pnpm audit
+        language: unsupported
         always_run: true
         pass_filenames: false
         verbose: true

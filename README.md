@@ -6,13 +6,16 @@ main ブランチへの push で GitHub Actions が自動的に Qiita へ記事�
 
 ## セットアップ
 
-node / pnpm のバージョンとタスクは `mise.toml` で管理している。
+道具のバージョンとタスクは `mise.toml` で管理している。
 
 ```bash
-mise install       # node / pnpm を導入
-mise run install   # 依存をインストール
+mise trust         # このリポジトリの mise.toml を信頼させる (初回に 1 回)
+mise install       # node / uv / pre-commit などを導入 (pnpm は package.json の packageManager の版)
+mise run setup     # 依存をインストールし、pre-commit の hook を入れる
 mise run login     # Qiita CLI にログイン
 ```
+
+`mise x` で呼ぶ hook は PATH に mise が要るので、PATH に mise が無い GUI のアプリ (git のクライアントなど) からのコミットは `mise: command not found` で止まることがある。止まったらターミナルからコミットする。
 
 ## 使い方
 

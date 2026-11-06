@@ -4,6 +4,8 @@
   "private": true,
   "packageManager": "pnpm@12.8.2",
   "devDependencies": {
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
     "@qiita/qiita-cli": "^1.10.0"
   }
 }
