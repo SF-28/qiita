@@ -3,7 +3,7 @@
 # 共有する道具 (pipx:pre-commit、pipx:pre-commit-hooks) の値は手で書き換えず、
 # dotfiles の tools/distribute_shared_locks.py で配る。
 [tools]
-node = "26.12.1"
+node = "26.13.0"
 # uv は Python を使わないこのリポジトリでも要る (配った pre-commit の依存の lock から venv を作るため)
 uv = "0.13.4"
 # シークレットスキャン（pre-commit の betterleaks が呼ぶ）
@@ -11,8 +11,8 @@ betterleaks = "1.9.0"
 # GitHub Actions のワークフローの lint（pre-commit の jactionlint が呼ぶ）
 jactionlint = "2.3.0"
 
-"pipx:pre-commit" = { version = "4.7.0", python = "3.14.8" }
-"pipx:pre-commit-hooks" = { version = "6.0.0", python = "3.14.8" }
+"pipx:pre-commit" = { version = "4.7.0", python = "3.14.10" }
+"pipx:pre-commit-hooks" = { version = "6.0.0", python = "3.14.10" }
 
 [settings]
 # pnpm の版は package.json の packageManager を正本にし、mise はそれを読む。
