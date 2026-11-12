@@ -5,7 +5,7 @@
 [tools]
 node = "26.13.0"
 # uv は Python を使わないこのリポジトリでも要る (配った pre-commit の依存の lock から venv を作るため)
-uv = "0.13.4"
+uv = "0.13.7"
 # シークレットスキャン（pre-commit の betterleaks が呼ぶ）
 betterleaks = "1.9.0"
 # GitHub Actions のワークフローの lint（pre-commit の jactionlint が呼ぶ）
